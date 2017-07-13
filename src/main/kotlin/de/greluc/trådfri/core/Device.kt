@@ -20,9 +20,9 @@
 package de.greluc.trådfri.core
 
 /**
- * This class handles the CoAP commands.
+ * This class is a implementation of a generic Trådfri compatible device.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class CoAPCommand
+internal class Device

@@ -31,4 +31,8 @@ fun main(args: Array<String>) {
 
     println(Constants.ATTR_APPLICATION_TYPE)
     println(Constants.ATTR_APPLICATION_TYPE.value)
+
+    val gwData = GatewayData("a", "b")
+
+    println(gwData.toString())
 }

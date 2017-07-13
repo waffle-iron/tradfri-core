@@ -25,4 +25,4 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-data class GatewayData(var host: String, var port: String)
+internal data class GatewayData(var host: String, var port: String, var psk: String = "0")

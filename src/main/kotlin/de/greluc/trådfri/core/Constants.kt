@@ -25,7 +25,7 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-enum class Constants(val value: Int) { //TODO comments for every entry and every group
+internal enum class Constants(val value: Int) { //TODO comments for every entry and every group
     OOT_DEVICES(15001), ROOT_GROUPS(15004), ROOT_MOODS(15005), ROOT_SMART_TASKS(15010), ROOT_START_ACTION(15013), // found under ATTR_START_ACTION
     PATH_GATEWAY_INFO_1(15011), PATH_GATEWAY_INFO_2(15012),
 

@@ -19,10 +19,19 @@
 
 package de.greluc.trådfri.core
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+
 /**
- * This class handles the CoAP commands.
+ * This class stores the message as an JSON object.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class CoAPCommand
+internal class CoAPMessage(vararg pairs: Pair<String, Any?>) {
+    private val mapper = jacksonObjectMapper()
+    private val message = mapper.writeValueAsString(pairs)
+
+    fun getMessage(): String {
+        return message
+    }
+}
