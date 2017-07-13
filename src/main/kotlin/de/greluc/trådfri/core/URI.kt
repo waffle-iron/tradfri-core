@@ -20,23 +20,21 @@
 package de.greluc.trådfri.core
 
 /**
- * This file is used to test some functionalities of the library.
+ * This data class stores the information about the URI of the Trådfri gateway.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
+internal class URI(gateway: GatewayData, single: Boolean = true, id: String) {
+    private var uri: String
 
-fun main(args: Array<String>) {
-    println("Test started.")
+    init {
+        if (single) {
+            uri = "coap://" + gateway.host + ":" + gateway.port + "/" + Constants.OOT_DEVICES.value + "/" + id
+        } else {
+            uri = "coap://" + gateway.host + ":" + gateway.port + "/" + Constants.ROOT_GROUPS.value + "/" + id
+        }
+    }
 
-    println(Constants.ATTR_APPLICATION_TYPE)
-    println(Constants.ATTR_APPLICATION_TYPE.value)
-
-    val gwData = GatewayData("a", "b")
-
-    println(gwData.toString())
-
-    val uri = URI(gwData, false, "1")
-
-    println(uri.getAsString())
+    fun getAsString() = uri
 }

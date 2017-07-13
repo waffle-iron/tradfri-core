@@ -26,5 +26,7 @@ package de.greluc.trådfri.core
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
 internal class CoAPMessage { //TODO implement JSON format of Trådfri
-    var message: String = "0"
+    private var message: String = "0"
+
+    fun getMessage() = message
 }

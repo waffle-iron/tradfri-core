@@ -19,10 +19,26 @@
 
 package de.greluc.trådfri.core
 
+import org.eclipse.californium.core.CoapClient
+
 /**
  * This class handles the CoAP commands.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class CoAPCommand
+internal class CoAPCommand(gatewayData: GatewayData) {
+    var gatewayData: GatewayData
+
+    init {
+        this.gatewayData = gatewayData
+    }
+
+    fun getURI(single: Boolean, id: String): URI {
+        return URI(gatewayData, single, id)
+    }
+
+    fun getCoAPClient(uri: URI): CoapClient {
+        return CoapClient(uri.getAsString())
+    }
+}
