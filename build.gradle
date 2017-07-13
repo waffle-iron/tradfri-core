@@ -1,0 +1,56 @@
+/*
+ * Copyright (c) 2017 Lucas Greuloch (greluc). All rights reserved.
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details (a copy is included in the LICENSE file
+ * that accompanied this code).
+ *
+ * Please contact lucas.greuloch@gmail.com
+ * or visit www.greluc.de if you need additional information or have any
+ * questions.
+ */
+
+group 'de.greluc.trådfri'
+version '1.0.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.1.3-2'
+    ext.californium_version = '2.0.0-M4'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.eclipse.californium:californium-core:$californium_version"
+        //classpath "org.eclipse.californium:californium-proxy:$californium_version"
+        classpath "org.eclipse.californium:scandium:$californium_version"
+    }
+}
+
+apply plugin: 'kotlin'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.eclipse.californium:californium-core:$californium_version"
+    //compile "org.eclipse.californium:californium-proxy:$californium_version" */
+    compile "org.eclipse.californium:scandium:$californium_version"
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
