@@ -2,7 +2,7 @@
 
 First off, thanks for taking the time to contribute!
 
-The following is a set of guidelines for contributing to Trådfri-Core, which is hosted on GitHub ([tradfri-core](https://github.com/greluc/tradfri-core)). These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to Trådfri-Core, which is hosted on GitHub ([tradfri-core](https://github.com/Tradfri-Central/tradfri-core)). These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 #### Table Of Contents
 
@@ -20,7 +20,7 @@ The following is a set of guidelines for contributing to Trådfri-Core, which is
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [lucas.greuloch@gmail.com](mailto:lucas.greuloch@gmail.com).
+This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [code-of-conduct@tradfri-central.de](mailto:code-of-conduct@tradfri-central.de).
 
 ## I don't want to read this whole thing I just have a question!!!
 
