@@ -28,7 +28,7 @@ import java.net.UnknownHostException
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class GatewayData(private val host: String, private val port: String = Constants.DEFAULT_GATEWAY_PORT.value.toString()) {
+internal class GatewayData(host: String, private val port: String = Constants.DEFAULT_GATEWAY_PORT.value.toString()) {
     private val address: InetAddress
 
     init {
@@ -38,6 +38,14 @@ internal class GatewayData(private val host: String, private val port: String = 
             error("Host is not an InetAddress!!!")
             e.printStackTrace()
         }
+
+        try {
+            if (Integer.parseInt(port) < 0 || Integer.parseInt(port) > 65535) error("No valid Port entered!!!")
+        } catch (e: NumberFormatException) {
+            error("No valid Port entered!!!")
+            e.printStackTrace()
+        }
+
     }
 
     fun getInetAddress(): String = address.hostAddress
