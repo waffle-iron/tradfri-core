@@ -19,30 +19,13 @@
 
 package de.greluc.trådfri.core
 
-import java.net.InetAddress
-import java.net.UnknownHostException
-
 /**
- * This data class stores the information about the Trådfri gateway.
- *
- * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 13.07.2017
+ * Created by Lucas on 14.07.2017.
  */
-internal class GatewayData(private val host: String, private val port: String = Constants.DEFAULT_GATEWAY_PORT.value.toString(), private val psk: String = "") {
-    private val address: InetAddress
-
-    init {
-        try {
-            address = InetAddress.getByName(host)
-        } catch (e: UnknownHostException) {
-            error("Host is not an InetAddress!!!")
-            e.printStackTrace()
-        }
+internal class GatewayDataTest {
+    @org.junit.jupiter.api.Test fun getInetAddress() {
+        assert(GatewayData("192.168.1.1").getInetAddress().equals("192.168.1.1"))
+        //assert(GatewayData("controller.trådfri.greluc.de").getInetAddress().equals("X.X.X.X")) TODO add when static ip is available
     }
 
-    fun getInetAddress(): String = address.hostAddress
-
-    fun getPort(): String = port
-
-    fun getPSK(): String = psk
 }
