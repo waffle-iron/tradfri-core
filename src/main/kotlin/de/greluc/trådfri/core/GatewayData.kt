@@ -32,6 +32,7 @@ internal class GatewayData(host: String, private val port: String = Constants.DE
     private val address: InetAddress
 
     init {
+        //TODO display error dialogue instead of error messages in console
         try {
             address = InetAddress.getByName(host)
         } catch (e: UnknownHostException) {
@@ -48,7 +49,7 @@ internal class GatewayData(host: String, private val port: String = Constants.DE
 
     }
 
-    fun getInetAddress(): String = address.hostAddress
+    fun getInetAddress() = address.hostAddress
 
-    fun getPort(): String = port
+    fun getPort() = port
 }
