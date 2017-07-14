@@ -13,13 +13,11 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit www.greluc.de if you need additional information or have any
+ * or visit trådfri.greluc.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
-
-import org.eclipse.californium.core.CoapClient
 
 /**
  * This class handles the CoAP commands.
@@ -34,11 +32,11 @@ internal class CoAPCommand(gatewayData: GatewayData) {
         this.gatewayData = gatewayData
     }
 
-    fun getURI(single: Boolean, id: String): URI {
-        return URI(gatewayData, single, id)
-    }
-
-    fun getCoAPClient(uri: URI): CoapClient {
-        return CoapClient(uri.getAsString())
+    fun getClient(single: Boolean, id: Int): SecureClient {
+        if (single) {
+            return SecureClient("coap://" + gatewayData.host + ":" + gatewayData.port + "/" + Constants.OOT_DEVICES.value + "/" + id)
+        } else {
+            return SecureClient("coap://" + gatewayData.host + ":" + gatewayData.port + "/" + Constants.ROOT_GROUPS.value + "/" + id)
+        }
     }
 }

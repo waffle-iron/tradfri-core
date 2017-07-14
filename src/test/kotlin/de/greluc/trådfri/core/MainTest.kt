@@ -13,7 +13,7 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit www.greluc.de if you need additional information or have any
+ * or visit trådfri.greluc.de if you need additional information or have any
  * questions.
  */
 
@@ -35,8 +35,4 @@ fun main(args: Array<String>) {
     val gwData = GatewayData("a", "b")
 
     println(gwData.toString())
-
-    val uri = URI(gwData, false, "1")
-
-    println(uri.getAsString())
 }
