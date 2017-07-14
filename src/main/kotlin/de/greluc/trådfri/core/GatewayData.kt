@@ -28,7 +28,7 @@ import java.net.UnknownHostException
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class GatewayData(private val host: String, private val port: String = Constants.DEFAULT_GATEWAY_PORT.value.toString(), private val psk: String = "") {
+internal class GatewayData(private val host: String, private val port: String = Constants.DEFAULT_GATEWAY_PORT.value.toString()) {
     private val address: InetAddress
 
     init {
@@ -43,6 +43,4 @@ internal class GatewayData(private val host: String, private val port: String = 
     fun getInetAddress(): String = address.hostAddress
 
     fun getPort(): String = port
-
-    fun getPSK(): String = psk
 }
