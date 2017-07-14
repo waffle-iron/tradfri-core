@@ -39,6 +39,8 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.util.logging.Level;
 
+//TODO convert to kotlin
+
 /**
  * This class is the implementation of an secure CoAP Client.
  * It's based on the SecureClient Example from the Californium libraries.

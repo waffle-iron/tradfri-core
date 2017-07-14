@@ -25,13 +25,7 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class CoAPCommand(gatewayData: GatewayData) {
-    var gatewayData: GatewayData
-
-    init {
-        this.gatewayData = gatewayData
-    }
-
+internal class CoAPCommand(var gatewayData: GatewayData) {
     fun getClient(single: Boolean, id: Int): SecureClient {
         if (single) {
             return SecureClient("coap://" + gatewayData.host + ":" + gatewayData.port + "/" + Constants.OOT_DEVICES.value + "/" + id)
