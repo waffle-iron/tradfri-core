@@ -25,4 +25,4 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal data class GatewayData(var host: String, var port: String = "5684", var psk: String = "")
+internal data class GatewayData(var host: String, var port: String = Constants.DEFAULT_GATEWAY_PORT.value.toString(), var psk: String = "")
