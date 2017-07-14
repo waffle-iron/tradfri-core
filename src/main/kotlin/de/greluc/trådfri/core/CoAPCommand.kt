@@ -28,9 +28,9 @@ package de.greluc.trådfri.core
 internal class CoAPCommand(var gatewayData: GatewayData) {
     fun getClient(single: Boolean, id: Int): SecureClient {
         if (single) {
-            return SecureClient("coap://" + gatewayData.getInetAddress() + ":" + gatewayData.getPort() + "/" + Constants.OOT_DEVICES.value + "/" + id)
+            return SecureClient("coaps://" + gatewayData.getInetAddress() + ":" + gatewayData.getPort() + "/" + Constants.OOT_DEVICES + "/" + id)
         } else {
-            return SecureClient("coap://" + gatewayData.getInetAddress() + ":" + gatewayData.getPort() + "/" + Constants.ROOT_GROUPS.value + "/" + id)
+            return SecureClient("coaps://" + gatewayData.getInetAddress() + ":" + gatewayData.getPort() + "/" + Constants.ROOT_GROUPS + "/" + id)
         }
     }
 }

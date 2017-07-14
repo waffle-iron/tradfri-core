@@ -28,11 +28,4 @@ package de.greluc.trådfri.core
 
 fun main(args: Array<String>) {
     println("Test started")
-
-    println(Constants.ATTR_APPLICATION_TYPE)
-    println(Constants.ATTR_APPLICATION_TYPE.value)
-
-    val gwData = GatewayData("192.168.1.1")
-
-    println(gwData.getInetAddress() + ":" + gwData.getPort())
 }

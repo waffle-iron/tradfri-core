@@ -19,6 +19,7 @@
 
 package de.greluc.trådfri.core
 
+import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT
 import java.net.InetAddress
 import java.net.UnknownHostException
 
@@ -28,7 +29,7 @@ import java.net.UnknownHostException
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class GatewayData(host: String, private val port: String = Constants.DEFAULT_GATEWAY_PORT.value.toString()) {
+internal class GatewayData(host: String, private val port: String = PRESET_GATEWAY_PORT) {
     private val address: InetAddress
 
     init {
