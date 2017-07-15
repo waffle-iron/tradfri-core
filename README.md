@@ -8,9 +8,8 @@
 
 ### Website
 
-You can finde more information about Trådfri-Core at the [Trådfri-Central](https://www.tradfri-central.de) Website (when it is launched)
+You can finde more information about Trådfri-Core at the [Trådfri-Central](https://www.tradfri-central.de) Website (when it is launched).
 
 ### Chatroom
 
 * Join the Trådfri-Core chat room here: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Tr%C3%A5dfri-Central/core)
-
