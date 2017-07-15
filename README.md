@@ -13,4 +13,3 @@ You can finde morge information about Trådfri-Core at the [Trådfri-Central](ht
 ### Chatroom
 
 * Join the Trådfri-Core chat room here: [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Tr%C3%A5dfri-Central/core)
-
