@@ -78,7 +78,14 @@ internal object Constants { //TODO comments for every entry and every group and 
     const val ATTR_TRANSITION_TIME: String = "5712"
     const val ATTR_REPEAT_DAYS: String = "9041"
 
-    const val ATTR_DISCOVER_ALL: String = ".well-known/core"
+    const val ATTR_DISCOVER_ALL: String = "/.well-known/core"
+
+    const val METHOD_GET: String = "GET"
+    const val METHOD_POST: String = "POST"
+    const val METHOD_PUT: String = "PUT"
+    const val METHOD_DELETE: String = "DELETE"
+    const val METHOD_DISCOVER: String = "DISCOVER"
+    const val METHOD_OBSERVE: String = "OBSERVE"
 
     const val PRESET_CLIENT_IDENTITY: String = "Client_identity"
     const val PRESET_GATEWAY_PORT: String = "5864"

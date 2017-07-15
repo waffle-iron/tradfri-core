@@ -45,6 +45,8 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.util.logging.Level;
 
+import static de.greluc.trådfri.core.Constants.*;
+
 /**
  * This class implements a secure CoAP client.
  * Console-Client fom Californium-Tools was used as a blueprint.
@@ -70,12 +72,6 @@ public class SecureClient {
     private final String TRUST_STORE_PASSWORD = "rootPass";
     private final String KEY_STORE_LOCATION = "certs/keyStore.jks";
     private final String KEY_STORE_PASSWORD = "endPass";
-    // resource URI path used for discovery
-    private final String DISCOVERY_RESOURCE = "/.well-known/core";
-    // indices of command line parameters
-    private final int IDX_METHOD = 0;
-    private final int IDX_URI = 1;
-    private final int IDX_PAYLOAD = 2;
     // exit codes for runtime errors
     private final int ERR_MISSING_METHOD = 1;
     private final int ERR_UNKNOWN_METHOD = 2;
@@ -84,7 +80,7 @@ public class SecureClient {
     private final int ERR_REQUEST_FAILED = 5;
     private final int ERR_RESPONSE_FAILED = 6;
     // Succes exit code
-    private final int SUCCES = 6;
+    private final int SUCCESS = 6;
     // initialize parameters
     private String method = null;
     private URI uri = null;
@@ -100,17 +96,17 @@ public class SecureClient {
         this.useRaw = useRaw; // false when certificate is used
         this.gatewayData = gatewayData;
 
-            // load trust store
-            KeyStore trustStore = KeyStore.getInstance("JKS");
+        // load trust store
+        KeyStore trustStore = KeyStore.getInstance("JKS");
         InputStream inTrust = new FileInputStream(TRUST_STORE_LOCATION);
         trustStore.load(inTrust, TRUST_STORE_PASSWORD.toCharArray());
         // load multiple certificates if needed
-            Certificate[] trustedCertificates = new Certificate[1];
-            trustedCertificates[0] = trustStore.getCertificate("root");
+        Certificate[] trustedCertificates = new Certificate[1];
+        trustedCertificates[0] = trustStore.getCertificate("root");
 
-            DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
+        DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
 
-            builder.setTrustStore(trustedCertificates);
+        builder.setTrustStore(trustedCertificates);
         if (usePSK) {
             InMemoryPskStore pskStore = new InMemoryPskStore();
             pskStore.addKnownPeer(gatewayData.getInetAddress(), Constants.PRESET_CLIENT_IDENTITY, new String(System.console().readPassword("Secret Key (input hidden): ")).getBytes()); //TODO get secure input of psk over the api from outside
@@ -159,7 +155,7 @@ public class SecureClient {
         if (method.equals("DISCOVER") && (uri.getPath() == null || uri.getPath().isEmpty() || uri.getPath().equals("/"))) {
             // add discovery resource path to URI
             try {
-                uri = new URI(uri.getScheme(), uri.getAuthority(), DISCOVERY_RESOURCE, uri.getQuery());
+                uri = new URI(uri.getScheme(), uri.getAuthority(), ATTR_DISCOVER_ALL, uri.getQuery());
 
             } catch (URISyntaxException e) {
                 System.err.println("Failed to parse URI: " + e.getMessage());
@@ -218,7 +214,7 @@ public class SecureClient {
 
             } while (loop);
 
-            return SUCCES;
+            return SUCCESS;
         } catch (Exception e) {
             System.err.println("Failed to execute request: " + e.getMessage());
             return ERR_REQUEST_FAILED;
@@ -231,17 +227,17 @@ public class SecureClient {
      * @return A new request object, or null if method not recognized
      */
     private Request newRequest(String method) {
-        if (method.equals("GET")) {
+        if (method.equals(METHOD_GET)) {
             return Request.newGet();
-        } else if (method.equals("POST")) {
+        } else if (method.equals(METHOD_POST)) {
             return Request.newPost();
-        } else if (method.equals("PUT")) {
+        } else if (method.equals(METHOD_PUT)) {
             return Request.newPut();
-        } else if (method.equals("DELETE")) {
+        } else if (method.equals(METHOD_DELETE)) {
             return Request.newDelete();
-        } else if (method.equals("DISCOVER")) {
+        } else if (method.equals(METHOD_DISCOVER)) {
             return Request.newGet();
-        } else if (method.equals("OBSERVE")) {
+        } else if (method.equals(METHOD_OBSERVE)) {
             Request request = Request.newGet();
             request.setObserve();
             loop = true;
