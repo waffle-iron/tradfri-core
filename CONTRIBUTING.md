@@ -20,7 +20,7 @@ The following is a set of guidelines for contributing to Trådfri-Core, which is
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [code-of-conduct@tradfri-central.de](mailto:code-of-conduct@tradfri-central.de).
+This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [lucas.greuloch@gmail.com](mailto:lucas.greuloch@gmail.com).
 
 ## I don't want to read this whole thing I just have a question!!!
 
