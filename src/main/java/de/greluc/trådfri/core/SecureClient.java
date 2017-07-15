@@ -19,16 +19,22 @@
 
 package de.greluc.trådfri.core;
 
-import org.eclipse.californium.core.CoapClient;
-import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.CaliforniumLogger;
 import org.eclipse.californium.core.Utils;
+import org.eclipse.californium.core.coap.MediaTypeRegistry;
+import org.eclipse.californium.core.coap.Request;
+import org.eclipse.californium.core.coap.Response;
 import org.eclipse.californium.core.network.CoapEndpoint;
+import org.eclipse.californium.core.network.Endpoint;
+import org.eclipse.californium.core.network.EndpointManager;
 import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.eclipse.californium.scandium.DTLSConnector;
 import org.eclipse.californium.scandium.ScandiumLogger;
 import org.eclipse.californium.scandium.config.DtlsConnectorConfig;
-import org.eclipse.californium.scandium.dtls.pskstore.StaticPskStore;
+import org.eclipse.californium.scandium.dtls.cipher.CipherSuite;
+import org.eclipse.californium.scandium.dtls.pskstore.InMemoryPskStore;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -39,99 +45,212 @@ import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.util.logging.Level;
 
-//TODO convert to kotlin
-
 /**
- * This class is the implementation of an secure CoAP Client.
- * It's based on the SecureClient Example from the Californium libraries.
+ * This class implements a secure CoAP client.
+ * Console-Client fom Californium-Tools was used as a blueprint.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
 public class SecureClient {
 
-    private static final String TRUST_STORE_PASSWORD = "rootPass";
-    private static final String KEY_STORE_PASSWORD = "endPass";
-    private static final String KEY_STORE_LOCATION = "certs/keyStore.jks";
-    private static final String TRUST_STORE_LOCATION = "certs/trustStore.jks";
+    // for coaps
+    private static Endpoint dtlsEndpoint;
 
     static {
+        CaliforniumLogger.initialize();
+        CaliforniumLogger.setLevel(Level.WARNING);
+
         ScandiumLogger.initialize();
-        ScandiumLogger.setLevel(Level.FINE);
+        ScandiumLogger.setLevel(Level.FINER);
     }
 
-    private final String SERVER_URI;
+    // the trust store file used for DTLS server authentication
+    private final String TRUST_STORE_LOCATION = "certs/trustStore.jks";
+    private final String TRUST_STORE_PASSWORD = "rootPass";
+    private final String KEY_STORE_LOCATION = "certs/keyStore.jks";
+    private final String KEY_STORE_PASSWORD = "endPass";
+    // resource URI path used for discovery
+    private final String DISCOVERY_RESOURCE = "/.well-known/core";
+    // indices of command line parameters
+    private final int IDX_METHOD = 0;
+    private final int IDX_URI = 1;
+    private final int IDX_PAYLOAD = 2;
+    // exit codes for runtime errors
+    private final int ERR_MISSING_METHOD = 1;
+    private final int ERR_UNKNOWN_METHOD = 2;
+    private final int ERR_MISSING_URI = 3;
+    private final int ERR_BAD_URI = 4;
+    private final int ERR_REQUEST_FAILED = 5;
+    private final int ERR_RESPONSE_FAILED = 6;
+    // Succes exit code
+    private final int SUCCES = 6;
+    // initialize parameters
+    private String method = null;
+    private URI uri = null;
+    private String payload = "";
+    private GatewayData gatewayData;
+    private boolean loop = false;
+    private boolean usePSK = false;
+    private boolean useRaw = true;
 
-    private DTLSConnector dtlsConnector;
-
-    public SecureClient(String uri) {
-        this.SERVER_URI = uri;
-
-        try {
-            // load key store
-            KeyStore keyStore = KeyStore.getInstance("JKS");
-            InputStream in = getClass().getClassLoader().getResourceAsStream(KEY_STORE_LOCATION);
-            keyStore.load(in, KEY_STORE_PASSWORD.toCharArray());
-            in.close();
+    public SecureClient(Boolean loop, Boolean usePSK, Boolean useRaw, GatewayData gatewayData) throws IOException, GeneralSecurityException {
+        this.loop = loop;
+        this.usePSK = usePSK;
+        this.useRaw = useRaw; // false when certificate is used
+        this.gatewayData = gatewayData;
 
             // load trust store
             KeyStore trustStore = KeyStore.getInstance("JKS");
-            in = getClass().getClassLoader().getResourceAsStream(TRUST_STORE_LOCATION);
-            trustStore.load(in, TRUST_STORE_PASSWORD.toCharArray());
-            in.close();
-
-            // You can load multiple certificates if needed
+        InputStream inTrust = new FileInputStream(TRUST_STORE_LOCATION);
+        trustStore.load(inTrust, TRUST_STORE_PASSWORD.toCharArray());
+        // load multiple certificates if needed
             Certificate[] trustedCertificates = new Certificate[1];
             trustedCertificates[0] = trustStore.getCertificate("root");
 
             DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
-            builder.setPskStore(new StaticPskStore("Client_identity", "secretPSK".getBytes()));
-            builder.setIdentity((PrivateKey) keyStore.getKey("client", KEY_STORE_PASSWORD.toCharArray()),
-                    keyStore.getCertificateChain("client"), true);
+
             builder.setTrustStore(trustedCertificates);
-            dtlsConnector = new DTLSConnector(builder.build());
-
-        } catch (GeneralSecurityException | IOException e) {
-            System.err.println("Could not load the keystore");
-            e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-
-        SecureClient client = new SecureClient("coaps://localhost/secure");
-        client.test();
-
-        synchronized (SecureClient.class) {
-            SecureClient.class.wait();
-        }
-    }
-
-    private void test() {
-
-        CoapResponse response = null;
-        try {
-            URI uri = new URI(SERVER_URI);
-
-            CoapClient client = new CoapClient(uri);
-            client.setEndpoint(new CoapEndpoint(dtlsConnector, NetworkConfig.getStandard()));
-            response = client.get();
-        } catch (URISyntaxException e) {
-            System.err.println("Invalid URI: " + e.getMessage());
-            System.exit(-1);
-        }
-
-        if (response != null) {
-
-            System.out.println(response.getCode());
-            System.out.println(response.getOptions());
-            System.out.println(response.getResponseText());
-
-            System.out.println("\nADVANCED\n");
-            System.out.println(Utils.prettyPrint(response));
-
+        if (usePSK) {
+            InMemoryPskStore pskStore = new InMemoryPskStore();
+            pskStore.addKnownPeer(gatewayData.getInetAddress(), Constants.PRESET_CLIENT_IDENTITY, new String(System.console().readPassword("Secret Key (input hidden): ")).getBytes()); //TODO get secure input of psk over the api from outside
+            builder.setPskStore(pskStore);
+            builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
         } else {
-            System.out.println("No response received.");
+            KeyStore keyStore = KeyStore.getInstance("JKS");
+            InputStream in = new FileInputStream(KEY_STORE_LOCATION);
+            keyStore.load(in, KEY_STORE_PASSWORD.toCharArray());
+            builder.setIdentity((PrivateKey) keyStore.getKey("client", KEY_STORE_PASSWORD.toCharArray()), keyStore.getCertificateChain("client"), useRaw);
+        }
+
+        DTLSConnector dtlsconnector = new DTLSConnector(builder.build(), null);
+
+        dtlsEndpoint = new CoapEndpoint(dtlsconnector, NetworkConfig.getStandard());
+        dtlsEndpoint.start();
+        EndpointManager.getEndpointManager().setDefaultEndpoint(dtlsEndpoint);
+    }
+
+    private int sendMessage(String uriAsString, CoAPMessage message) {
+        this.method = message.getMethod();
+
+        try {
+            uri = new URI(uriAsString);
+        } catch (URISyntaxException e) {
+            System.err.println("Failed to parse URI: " + e.getMessage());
+            System.exit(ERR_BAD_URI);
+        }
+
+        payload = message.getPayload();
+
+        // check if mandatory parameters specified
+        if (method == null) {
+            System.err.println("Method not specified");
+            System.exit(ERR_MISSING_METHOD);
+        }
+        if (uri == null) {
+            System.err.println("URI not specified");
+            System.exit(ERR_MISSING_URI);
+        }
+
+        // create request according to specified method
+        Request request = newRequest(method);
+
+        // set request URI
+        if (method.equals("DISCOVER") && (uri.getPath() == null || uri.getPath().isEmpty() || uri.getPath().equals("/"))) {
+            // add discovery resource path to URI
+            try {
+                uri = new URI(uri.getScheme(), uri.getAuthority(), DISCOVERY_RESOURCE, uri.getQuery());
+
+            } catch (URISyntaxException e) {
+                System.err.println("Failed to parse URI: " + e.getMessage());
+                System.exit(ERR_BAD_URI);
+            }
+        }
+
+        request.setURI(uri);
+        request.setPayload(payload);
+        request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
+
+        // execute request
+        try {
+            request.send();
+
+            // loop for receiving multiple responses
+            do {
+
+                // receive response
+                Response response = null;
+                try {
+                    response = request.waitForResponse();
+                } catch (InterruptedException e) {
+                    System.err.println("Failed to receive response: " + e.getMessage());
+                    System.exit(ERR_RESPONSE_FAILED);
+                }
+
+                // output response
+
+                if (response != null) {
+
+                    System.out.println(Utils.prettyPrint(response));
+                    System.out.println("Time elapsed (ms): " + response.getRTT());
+
+                    // check of response contains resources
+                    if (response.getOptions().isContentFormat(MediaTypeRegistry.APPLICATION_LINK_FORMAT)) {
+
+                        String linkFormat = response.getPayloadString();
+
+                        // output discovered resources
+                        System.out.println("\nDiscovered resources:");
+                        System.out.println(linkFormat);
+
+                    } else {
+                        // check if link format was expected by client
+                        if (method.equals("DISCOVER")) {
+                            System.out.println("Server error: Link format not specified");
+                        }
+                    }
+
+                } else {
+                    // no response received
+                    System.err.println("Request timed out");
+                    break;
+                }
+
+            } while (loop);
+
+            return SUCCES;
+        } catch (Exception e) {
+            System.err.println("Failed to execute request: " + e.getMessage());
+            return ERR_REQUEST_FAILED;
         }
     }
+
+    /*
+     * Instantiates a new request based on a string describing a method.
+     *
+     * @return A new request object, or null if method not recognized
+     */
+    private Request newRequest(String method) {
+        if (method.equals("GET")) {
+            return Request.newGet();
+        } else if (method.equals("POST")) {
+            return Request.newPost();
+        } else if (method.equals("PUT")) {
+            return Request.newPut();
+        } else if (method.equals("DELETE")) {
+            return Request.newDelete();
+        } else if (method.equals("DISCOVER")) {
+            return Request.newGet();
+        } else if (method.equals("OBSERVE")) {
+            Request request = Request.newGet();
+            request.setObserve();
+            loop = true;
+            return request;
+        } else {
+            System.err.println("Unknown method: " + method);
+            System.exit(ERR_UNKNOWN_METHOD);
+            return null;
+        }
+    }
+
 }

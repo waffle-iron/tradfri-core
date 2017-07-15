@@ -20,8 +20,7 @@
 package de.greluc.trådfri.core
 
 import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT
-import java.net.InetAddress
-import java.net.UnknownHostException
+import java.net.InetSocketAddress
 
 /**
  * This data class stores the information about the Trådfri gateway.
@@ -29,28 +28,21 @@ import java.net.UnknownHostException
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class GatewayData(host: String, private val port: String = PRESET_GATEWAY_PORT) {
-    private val address: InetAddress
+internal class GatewayData(host: String, port: String = PRESET_GATEWAY_PORT) {
+    private val address: InetSocketAddress
 
     init {
-        //TODO display error dialogue instead of error messages in console
+        //TODO display error dialogue instead of error messages in console or throw it to gui and let it get new input
         try {
-            address = InetAddress.getByName(host)
-        } catch (e: UnknownHostException) {
+            address = InetSocketAddress(host, Integer.parseInt(port))
+        } catch (e: IllegalArgumentException) {
             error("Host is not an InetAddress!!!")
             e.printStackTrace()
-        }
-
-        try {
-            if (Integer.parseInt(port) < 0 || Integer.parseInt(port) > 65535) error("No valid Port entered!!!")
         } catch (e: NumberFormatException) {
-            error("No valid Port entered!!!")
+            error("Port is invalid!!!")
             e.printStackTrace()
         }
-
     }
 
-    fun getInetAddress() = address.hostAddress
-
-    fun getPort() = port
+    fun getInetAddress() = address
 }

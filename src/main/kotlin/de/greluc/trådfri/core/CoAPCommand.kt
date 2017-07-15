@@ -26,11 +26,15 @@ package de.greluc.trådfri.core
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
 internal class CoAPCommand(var gatewayData: GatewayData) {
-    fun getClient(single: Boolean, id: Int): SecureClient {
+    fun setMessage(message: CoAPMessage) {
+
+    }
+
+    fun sendMessage(single: Boolean, id: Int, message: CoAPMessage) {
         if (single) {
-            return SecureClient("coaps://" + gatewayData.getInetAddress() + ":" + gatewayData.getPort() + "/" + Constants.OOT_DEVICES + "/" + id)
+            SecureClient(false, true, true, gatewayData)
         } else {
-            return SecureClient("coaps://" + gatewayData.getInetAddress() + ":" + gatewayData.getPort() + "/" + Constants.ROOT_GROUPS + "/" + id)
+            SecureClient(false, true, true, gatewayData)
         }
     }
 }
