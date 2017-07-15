@@ -13,7 +13,7 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit www.greluc.de if you need additional information or have any
+ * or visit trådfri.greluc.de if you need additional information or have any
  * questions.
  */
 
@@ -29,9 +29,6 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.eclipse.californium:californium-core:$californium_version"
-        //classpath "org.eclipse.californium:californium-proxy:$californium_version"
-        classpath "org.eclipse.californium:scandium:$californium_version"
     }
 }
 
@@ -43,8 +40,8 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+
     compile "org.eclipse.californium:californium-core:$californium_version"
-    //compile "org.eclipse.californium:californium-proxy:$californium_version" */
     compile "org.eclipse.californium:scandium:$californium_version"
 }
 

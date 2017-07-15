@@ -17,5 +17,16 @@
  * questions.
  */
 
-rootProject.name = 'core'
+package de.greluc.trådfri.core
 
+/**
+ * Created by Lucas on 14.07.2017.
+ */
+internal class GatewayDataTest {
+    @org.junit.jupiter.api.Test fun getInetAddress() {
+        assert(GatewayData("192.168.1.1", "5864").getInetAddress().address.hostAddress.equals("192.168.1.1"))
+        assert(GatewayData("192.168.1.1", "5864").getInetAddress().port == 5864)
+        //assert(GatewayData("controller.trådfri.greluc.de").getInetAddress().equals("X.X.X.X:5864")) TODO add when static ip is available
+    }
+
+}

@@ -13,7 +13,7 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit www.greluc.de if you need additional information or have any
+ * or visit trådfri.greluc.de if you need additional information or have any
  * questions.
  */
 
@@ -25,4 +25,16 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-class CoAPCommand
+internal class CoAPCommand(var gatewayData: GatewayData) {
+    fun setMessage(message: CoAPMessage) {
+
+    }
+
+    fun sendMessage(single: Boolean, id: Int, message: CoAPMessage) {
+        if (single) {
+            SecureClient(false, true, true, gatewayData)
+        } else {
+            SecureClient(false, true, true, gatewayData)
+        }
+    }
+}

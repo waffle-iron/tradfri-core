@@ -17,5 +17,23 @@
  * questions.
  */
 
-rootProject.name = 'core'
+package de.greluc.trådfri.core
 
+/**
+ * This class stores the message as an JSON object.
+ *
+ * @author Lucas Greuloch (greluc)
+ * @version 1.0.0-SNAPSHOT 13.07.2017
+ */
+internal class CoAPMessage { //TODO implement JSON format of Trådfri
+    private val payload: String = ""
+    private val method: String = ""
+
+    fun getPayload() = payload
+
+    fun getMethod() = method
+}
+
+/*
+echo '{ "3311" : [{ "5851" : 255 }] }' | ./coap-client -u "Client_identity" -k "YOUR_KEY" -v 10 -m put "coaps://192.169..0.3:5684/15001/65538" -f -
+ */

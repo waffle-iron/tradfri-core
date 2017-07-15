@@ -13,7 +13,7 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit www.greluc.de if you need additional information or have any
+ * or visit trådfri.greluc.de if you need additional information or have any
  * questions.
  */
 
@@ -27,8 +27,5 @@ package de.greluc.trådfri.core
  */
 
 fun main(args: Array<String>) {
-    println("Test started.")
-
-    println(Constants.ATTR_APPLICATION_TYPE)
-    println(Constants.ATTR_APPLICATION_TYPE.value)
+    println("Test started")
 }

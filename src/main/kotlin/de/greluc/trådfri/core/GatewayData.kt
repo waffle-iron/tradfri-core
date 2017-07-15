@@ -13,11 +13,14 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit www.greluc.de if you need additional information or have any
+ * or visit trådfri.greluc.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
+
+import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT
+import java.net.InetSocketAddress
 
 /**
  * This data class stores the information about the Trådfri gateway.
@@ -25,4 +28,21 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-data class GatewayData(var host: String, var port: String)
+internal class GatewayData(host: String, port: String = PRESET_GATEWAY_PORT) {
+    private val address: InetSocketAddress
+
+    init {
+        //TODO display error dialogue instead of error messages in console or throw it to gui and let it get new input
+        try {
+            address = InetSocketAddress(host, Integer.parseInt(port))
+        } catch (e: IllegalArgumentException) {
+            error("Host is not an InetAddress!!!")
+            e.printStackTrace()
+        } catch (e: NumberFormatException) {
+            error("Port is invalid!!!")
+            e.printStackTrace()
+        }
+    }
+
+    fun getInetAddress() = address
+}
