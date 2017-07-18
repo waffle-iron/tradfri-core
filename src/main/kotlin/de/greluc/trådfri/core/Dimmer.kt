@@ -19,22 +19,4 @@
 
 package de.greluc.trådfri.core
 
-/**
- * This class handles the CoAP commands.
- *
- * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 13.07.2017
- */
-internal class CoAPCommand(gateway: Gateway, psk: String) {
-    lateinit var client: SecureClient
-
-    init {
-        SecureClient(gateway, "TEST_PSK")
-    }
-
-    fun sendMessage(single: Boolean) {
-        if (single) {
-        } else {
-        }
-    }
-}
+class Dimmer(id: String) : Device(id)

@@ -28,7 +28,7 @@ import java.net.InetSocketAddress
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT) : Device(id) {
+class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT) : Device(id) {
     private val address: InetSocketAddress
 
     init {

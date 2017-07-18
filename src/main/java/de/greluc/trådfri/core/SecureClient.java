@@ -91,7 +91,7 @@ public class SecureClient
         builder.setTrustStore(trustedCertificates);
 
         InMemoryPskStore pskStore = new InMemoryPskStore();
-        pskStore.addKnownPeer(gateway.getInetAddress(), Constants.PRESET_CLIENT_IDENTITY, psk.getBytes()); //TODO get secure input of psk over the api from outside
+        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, psk.getBytes()); //TODO get secure input of psk over the api from outside
         builder.setPskStore(pskStore);
         builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
 
@@ -102,11 +102,11 @@ public class SecureClient
         EndpointManager.getEndpointManager().setDefaultEndpoint(dtlsEndpoint);
     }
 
-    private LinkedList<Response> sendMessage(String path, CoAPMessage message, Boolean loop)
+    private LinkedList<Response> sendMessage(String path, String method, String payload, Boolean loop)
     {
         try
         {
-            uri = new URI("coaps://" + gateway.getInetAddress().toString() + path);
+            uri = new URI("coaps://" + gateway.getInetAddress().getHostString() + ":" + gateway.getInetAddress().getPort() + path);
         }
         catch(URISyntaxException e)
         {
@@ -115,10 +115,10 @@ public class SecureClient
         }
 
         // create request according to specified method
-        Request request = newRequest(message.getMethod());
+        Request request = newRequest(method);
 
         request.setURI(uri);
-        request.setPayload(message.getPayload());
+        request.setPayload(payload);
         request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 
         // execute request

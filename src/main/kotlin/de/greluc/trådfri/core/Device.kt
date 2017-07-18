@@ -25,8 +25,14 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal open class Device(val id: String) {
+open class Device(val id: String) {
     var name: String = ""
     var firmware: String = ""
     var type: DeviceType = DeviceType.DEV_TYPE_UNKNOWN
+    var manufacturer: String = ""
+    var model: String = ""
+
+    open fun generatePayload(): String {
+        return ""
+    }
 }
