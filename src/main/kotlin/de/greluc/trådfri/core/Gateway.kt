@@ -13,7 +13,7 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
@@ -28,7 +28,7 @@ import java.net.InetSocketAddress
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class GatewayData(host: String, port: String = PRESET_GATEWAY_PORT) {
+internal class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT) : Device(id) {
     private val address: InetSocketAddress
 
     init {

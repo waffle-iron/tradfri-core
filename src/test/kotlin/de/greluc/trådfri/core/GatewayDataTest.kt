@@ -13,7 +13,7 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
@@ -24,9 +24,9 @@ package de.greluc.trådfri.core
  */
 internal class GatewayDataTest {
     @org.junit.jupiter.api.Test fun getInetAddress() {
-        assert(GatewayData("192.168.1.1", "5864").getInetAddress().address.hostAddress.equals("192.168.1.1"))
-        assert(GatewayData("192.168.1.1", "5864").getInetAddress().port == 5864)
-        //assert(GatewayData("controller.trådfri.greluc.de").getInetAddress().equals("X.X.X.X:5864")) TODO add when static ip is available
+        assert(Gateway("192.168.1.1", "5864").getInetAddress().address.hostAddress.equals("192.168.1.1"))
+        assert(Gateway("192.168.1.1", "5864").getInetAddress().port == 5864)
+        //assert(Gateway("controller.trådfri.greluc.de").getInetAddress().equals("X.X.X.X:5864")) TODO add when static ip is available
     }
 
 }

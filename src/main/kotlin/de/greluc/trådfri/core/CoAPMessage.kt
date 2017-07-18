@@ -13,11 +13,14 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
+
+import javax.json.Json
+
 
 /**
  * This class stores the message as an JSON object.
@@ -25,13 +28,34 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class CoAPMessage { //TODO implement JSON format of Trådfri
+internal class CoAPMessage { //TODO implement JSON/IPSO format of Trådfri
     private val payload: String = ""
     private val method: String = ""
 
     fun getPayload() = payload
 
     fun getMethod() = method
+
+    val factory = Json.createBuilderFactory(null)
+    val value = factory.createObjectBuilder()
+            .add("firstName", "John")
+            .add("lastName", "Smith")
+            .add("age", 25)
+            .add("address", factory.createObjectBuilder()
+                    .add("streetAddress", "21 2nd Street")
+                    .add("city", "New York")
+                    .add("state", "NY")
+                    .add("postalCode", "10021"))
+            .add("phoneNumber", factory.createArrayBuilder()
+                    .add(factory.createObjectBuilder()
+                            .add("type", "home")
+                            .add("number", "212 555-1234"))
+                    .add(factory.createObjectBuilder()
+                            .add("type", "fax")
+                            .add("number", "646 555-4567")))
+            .build()
+
+    fun getJSONAsString(): String = value.toString()
 }
 
 /*

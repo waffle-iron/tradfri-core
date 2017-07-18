@@ -13,7 +13,7 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
@@ -85,16 +85,17 @@ public class SecureClient {
     private String method = null;
     private URI uri = null;
     private String payload = "";
-    private GatewayData gatewayData;
+    private Gateway gateway;
     private boolean loop = false;
     private boolean usePSK = false;
     private boolean useRaw = true;
 
-    public SecureClient(Boolean loop, Boolean usePSK, Boolean useRaw, GatewayData gatewayData) throws IOException, GeneralSecurityException {
+    public SecureClient(Boolean loop, Boolean usePSK, Boolean useRaw, Gateway gateway) throws IOException, GeneralSecurityException
+    {
         this.loop = loop;
         this.usePSK = usePSK;
         this.useRaw = useRaw; // false when certificate is used
-        this.gatewayData = gatewayData;
+        this.gateway = gateway;
 
         // load trust store
         KeyStore trustStore = KeyStore.getInstance("JKS");
@@ -109,7 +110,7 @@ public class SecureClient {
         builder.setTrustStore(trustedCertificates);
         if (usePSK) {
             InMemoryPskStore pskStore = new InMemoryPskStore();
-            pskStore.addKnownPeer(gatewayData.getInetAddress(), Constants.PRESET_CLIENT_IDENTITY, new String(System.console().readPassword("Secret Key (input hidden): ")).getBytes()); //TODO get secure input of psk over the api from outside
+            pskStore.addKnownPeer(gateway.getInetAddress(), Constants.PRESET_CLIENT_IDENTITY, new String(System.console().readPassword("Secret Key (input hidden): ")).getBytes()); //TODO get secure input of psk over the api from outside
             builder.setPskStore(pskStore);
             builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
         } else {

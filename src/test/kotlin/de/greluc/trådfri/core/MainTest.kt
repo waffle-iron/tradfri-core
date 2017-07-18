@@ -13,11 +13,13 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
+
+import javax.json.Json
 
 /**
  * This file is used to test some functionalities of the library.
@@ -28,4 +30,25 @@ package de.greluc.trådfri.core
 
 fun main(args: Array<String>) {
     println("Test started")
+
+    val factory = Json.createBuilderFactory(null)
+    val value = factory.createObjectBuilder()
+            .add("firstName", "John")
+            .add("lastName", "Smith")
+            .add("age", 25)
+            .add("address", factory.createObjectBuilder()
+                    .add("streetAddress", "21 2nd Street")
+                    .add("city", "New York")
+                    .add("state", "NY")
+                    .add("postalCode", "10021"))
+            .add("phoneNumber", factory.createArrayBuilder()
+                    .add(factory.createObjectBuilder()
+                            .add("type", "home")
+                            .add("number", "212 555-1234"))
+                    .add(factory.createObjectBuilder()
+                            .add("type", "fax")
+                            .add("number", "646 555-4567")))
+            .build()
+
+    println(value.toString())
 }
