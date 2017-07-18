@@ -19,7 +19,6 @@
 
 package de.greluc.trådfri.core;
 
-import org.eclipse.californium.core.CaliforniumLogger;
 import org.eclipse.californium.core.Utils;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.coap.Request;
@@ -29,7 +28,6 @@ import org.eclipse.californium.core.network.Endpoint;
 import org.eclipse.californium.core.network.EndpointManager;
 import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.eclipse.californium.scandium.DTLSConnector;
-import org.eclipse.californium.scandium.ScandiumLogger;
 import org.eclipse.californium.scandium.config.DtlsConnectorConfig;
 import org.eclipse.californium.scandium.dtls.cipher.CipherSuite;
 import org.eclipse.californium.scandium.dtls.pskstore.InMemoryPskStore;
@@ -42,7 +40,6 @@ import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
-import java.util.logging.Level;
 
 import static de.greluc.trådfri.core.Constants.*;
 
@@ -57,14 +54,6 @@ public class SecureClient {
 
     // for coaps
     private static Endpoint dtlsEndpoint;
-
-    static {
-        CaliforniumLogger.initialize();
-        CaliforniumLogger.setLevel(Level.WARNING);
-
-        ScandiumLogger.initialize();
-        ScandiumLogger.setLevel(Level.FINER);
-    }
 
     // the trust store file used for DTLS server authentication
     private final String TRUST_STORE_LOCATION = "certs/trustStore.jks";
@@ -81,11 +70,10 @@ public class SecureClient {
     // Succes exit code
     private final int SUCCESS = 0;
     // initialize parameters
-    private String method = null;
-    private URI uri = null;
-    private String payload = "";
+    private String method;
+    private URI uri;
     private Gateway gateway;
-    private boolean loop = false;
+    private boolean loop;
 
     public SecureClient(Boolean loop, Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
     {
@@ -116,45 +104,22 @@ public class SecureClient {
         EndpointManager.getEndpointManager().setDefaultEndpoint(dtlsEndpoint);
     }
 
-    private int sendMessage(String uriAsString, CoAPMessage message) {
+    private int sendMessage(String path, CoAPMessage message)
+    {
         this.method = message.getMethod();
 
         try {
-            uri = new URI(uriAsString);
+            uri = new URI("coaps://" + gateway.getInetAddress().toString() + path);
         } catch (URISyntaxException e) {
             System.err.println("Failed to parse URI: " + e.getMessage());
             System.exit(ERR_BAD_URI);
         }
 
-        payload = message.getPayload();
-
-        // check if mandatory parameters specified
-        if (method == null) {
-            System.err.println("Method not specified");
-            System.exit(ERR_MISSING_METHOD);
-        }
-        if (uri == null) {
-            System.err.println("URI not specified");
-            System.exit(ERR_MISSING_URI);
-        }
-
         // create request according to specified method
         Request request = newRequest(method);
 
-        // set request URI
-        if (method.equals("DISCOVER") && (uri.getPath() == null || uri.getPath().isEmpty() || uri.getPath().equals("/"))) {
-            // add discovery resource path to URI
-            try {
-                uri = new URI(uri.getScheme(), uri.getAuthority(), ATTR_DISCOVER_ALL, uri.getQuery());
-
-            } catch (URISyntaxException e) {
-                System.err.println("Failed to parse URI: " + e.getMessage());
-                System.exit(ERR_BAD_URI);
-            }
-        }
-
         request.setURI(uri);
-        request.setPayload(payload);
+        request.setPayload(message.getPayload());
         request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 
         // execute request
@@ -174,7 +139,6 @@ public class SecureClient {
                 }
 
                 // output response
-
                 if (response != null) {
 
                     System.out.println(Utils.prettyPrint(response));
