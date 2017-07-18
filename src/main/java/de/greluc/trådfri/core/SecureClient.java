@@ -41,7 +41,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
-import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.util.logging.Level;
 
@@ -80,21 +79,17 @@ public class SecureClient {
     private final int ERR_REQUEST_FAILED = 5;
     private final int ERR_RESPONSE_FAILED = 6;
     // Succes exit code
-    private final int SUCCESS = 6;
+    private final int SUCCESS = 0;
     // initialize parameters
     private String method = null;
     private URI uri = null;
     private String payload = "";
     private Gateway gateway;
     private boolean loop = false;
-    private boolean usePSK = false;
-    private boolean useRaw = true;
 
-    public SecureClient(Boolean loop, Boolean usePSK, Boolean useRaw, Gateway gateway) throws IOException, GeneralSecurityException
+    public SecureClient(Boolean loop, Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
     {
         this.loop = loop;
-        this.usePSK = usePSK;
-        this.useRaw = useRaw; // false when certificate is used
         this.gateway = gateway;
 
         // load trust store
@@ -108,17 +103,11 @@ public class SecureClient {
         DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
 
         builder.setTrustStore(trustedCertificates);
-        if (usePSK) {
-            InMemoryPskStore pskStore = new InMemoryPskStore();
-            pskStore.addKnownPeer(gateway.getInetAddress(), Constants.PRESET_CLIENT_IDENTITY, new String(System.console().readPassword("Secret Key (input hidden): ")).getBytes()); //TODO get secure input of psk over the api from outside
-            builder.setPskStore(pskStore);
-            builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
-        } else {
-            KeyStore keyStore = KeyStore.getInstance("JKS");
-            InputStream in = new FileInputStream(KEY_STORE_LOCATION);
-            keyStore.load(in, KEY_STORE_PASSWORD.toCharArray());
-            builder.setIdentity((PrivateKey) keyStore.getKey("client", KEY_STORE_PASSWORD.toCharArray()), keyStore.getCertificateChain("client"), useRaw);
-        }
+
+        InMemoryPskStore pskStore = new InMemoryPskStore();
+        pskStore.addKnownPeer(gateway.getInetAddress(), Constants.PRESET_CLIENT_IDENTITY, psk.getBytes()); //TODO get secure input of psk over the api from outside
+        builder.setPskStore(pskStore);
+        builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
 
         DTLSConnector dtlsconnector = new DTLSConnector(builder.build(), null);
 
