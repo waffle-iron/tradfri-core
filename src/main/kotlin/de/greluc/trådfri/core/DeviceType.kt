@@ -19,14 +19,11 @@
 
 package de.greluc.trådfri.core
 
-/**
- * This class is a implementation of a generic Trådfri compatible device.
- *
- * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 13.07.2017
- */
-internal open class Device(val id: String) {
-    var name: String = ""
-    var firmware: String = ""
-    var type: DeviceType = DeviceType.DEV_TYPE_UNKNOWN
+enum class DeviceType {
+    DEV_TYPE_GATEWAY,
+    DEV_TYPE_LIGHT,
+    DEV_TYPE_LIGHT_COLOR,
+    DEV_TYPE_LIGHT_DIMM,
+    DEV_TYPE_LIGHT_COLOR_DIMM,
+    DEV_TYPE_UNKNOWN
 }
