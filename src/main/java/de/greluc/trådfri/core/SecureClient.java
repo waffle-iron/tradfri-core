@@ -19,7 +19,6 @@
 
 package de.greluc.trådfri.core;
 
-import org.eclipse.californium.core.Utils;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
@@ -40,6 +39,7 @@ import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.security.KeyStore;
 import java.security.cert.Certificate;
+import java.util.LinkedList;
 
 import static de.greluc.trådfri.core.Constants.*;
 
@@ -50,7 +50,8 @@ import static de.greluc.trådfri.core.Constants.*;
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-public class SecureClient {
+public class SecureClient
+{
 
     // for coaps
     private static Endpoint dtlsEndpoint;
@@ -70,14 +71,11 @@ public class SecureClient {
     // Succes exit code
     private final int SUCCESS = 0;
     // initialize parameters
-    private String method;
     private URI uri;
     private Gateway gateway;
-    private boolean loop;
 
-    public SecureClient(Boolean loop, Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
+    public SecureClient(Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
     {
-        this.loop = loop;
         this.gateway = gateway;
 
         // load trust store
@@ -104,75 +102,65 @@ public class SecureClient {
         EndpointManager.getEndpointManager().setDefaultEndpoint(dtlsEndpoint);
     }
 
-    private int sendMessage(String path, CoAPMessage message)
+    private LinkedList<Response> sendMessage(String path, CoAPMessage message, Boolean loop)
     {
-        this.method = message.getMethod();
-
-        try {
+        try
+        {
             uri = new URI("coaps://" + gateway.getInetAddress().toString() + path);
-        } catch (URISyntaxException e) {
+        }
+        catch(URISyntaxException e)
+        {
             System.err.println("Failed to parse URI: " + e.getMessage());
             System.exit(ERR_BAD_URI);
         }
 
         // create request according to specified method
-        Request request = newRequest(method);
+        Request request = newRequest(message.getMethod());
 
         request.setURI(uri);
         request.setPayload(message.getPayload());
         request.getOptions().setContentFormat(MediaTypeRegistry.TEXT_PLAIN);
 
         // execute request
-        try {
+        LinkedList<Response> listResponse = new LinkedList<>();
+        try
+        {
             request.send();
 
             // loop for receiving multiple responses
-            do {
-
+            do
+            {
                 // receive response
                 Response response = null;
-                try {
+                try
+                {
                     response = request.waitForResponse();
-                } catch (InterruptedException e) {
+                }
+                catch(InterruptedException e)
+                {
                     System.err.println("Failed to receive response: " + e.getMessage());
                     System.exit(ERR_RESPONSE_FAILED);
                 }
 
                 // output response
-                if (response != null) {
-
-                    System.out.println(Utils.prettyPrint(response));
-                    System.out.println("Time elapsed (ms): " + response.getRTT());
-
-                    // check of response contains resources
-                    if (response.getOptions().isContentFormat(MediaTypeRegistry.APPLICATION_LINK_FORMAT)) {
-
-                        String linkFormat = response.getPayloadString();
-
-                        // output discovered resources
-                        System.out.println("\nDiscovered resources:");
-                        System.out.println(linkFormat);
-
-                    } else {
-                        // check if link format was expected by client
-                        if (method.equals("DISCOVER")) {
-                            System.out.println("Server error: Link format not specified");
-                        }
-                    }
-
-                } else {
+                if(response != null)
+                {
+                    listResponse.add(response);
+                }
+                else
+                {
                     // no response received
                     System.err.println("Request timed out");
                     break;
                 }
-
-            } while (loop);
-
-            return SUCCESS;
-        } catch (Exception e) {
-            System.err.println("Failed to execute request: " + e.getMessage());
-            return ERR_REQUEST_FAILED;
+            }
+            while(loop);
         }
+        catch(Exception e)
+        {
+            System.err.println("Failed to execute request: " + e.getMessage());
+        }
+        return listResponse;
     }
 
     /*
@@ -180,23 +168,36 @@ public class SecureClient {
      *
      * @return A new request object, or null if method not recognized
      */
-    private Request newRequest(String method) {
-        if (method.equals(METHOD_GET)) {
+    private Request newRequest(String method)
+    {
+        if(method.equals(METHOD_GET))
+        {
             return Request.newGet();
-        } else if (method.equals(METHOD_POST)) {
+        }
+        else if(method.equals(METHOD_POST))
+        {
             return Request.newPost();
-        } else if (method.equals(METHOD_PUT)) {
+        }
+        else if(method.equals(METHOD_PUT))
+        {
             return Request.newPut();
-        } else if (method.equals(METHOD_DELETE)) {
+        }
+        else if(method.equals(METHOD_DELETE))
+        {
             return Request.newDelete();
-        } else if (method.equals(METHOD_DISCOVER)) {
+        }
+        else if(method.equals(METHOD_DISCOVER))
+        {
             return Request.newGet();
-        } else if (method.equals(METHOD_OBSERVE)) {
+        }
+        else if(method.equals(METHOD_OBSERVE))
+        {
             Request request = Request.newGet();
             request.setObserve();
-            loop = true;
             return request;
-        } else {
+        }
+        else
+        {
             System.err.println("Unknown method: " + method);
             System.exit(ERR_UNKNOWN_METHOD);
             return null;
