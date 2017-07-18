@@ -27,8 +27,19 @@ package de.greluc.trådfri.core
  */
 fun main(args: Array<String>) {
     println("Test started")
+}
 
+fun testCoAP() {
     val gateway = Gateway("1", "vs0.inf.ethz.ch")
 
     val client = CoAPClient(gateway, "sesame")
+
+
+    println("Client started")
+
+    val listResponses = client.sendMessage("/test", "GET", "", false)
+
+    println("Message send and Response arrived")
+
+    listResponses.get(0).payload
 }

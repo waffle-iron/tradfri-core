@@ -66,7 +66,7 @@ public class CoAPClient
         DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
 
         InMemoryPskStore pskStore = new InMemoryPskStore();
-        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, psk.getBytes()); //TODO get secure input of psk over the api from outside
+        pskStore.addKnownPeer(gateway.getInetAddress(), "password", psk.getBytes()); //TODO get secure input of psk over the api from outside
         builder.setPskStore(pskStore);
         builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
 
@@ -77,7 +77,7 @@ public class CoAPClient
         EndpointManager.getEndpointManager().setDefaultEndpoint(dtlsEndpoint);
     }
 
-    private LinkedList<Response> sendMessage(String path, String method, String payload, Boolean loop)
+    LinkedList<Response> sendMessage(String path, String method, String payload, Boolean loop)
     {
         try
         {
