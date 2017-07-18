@@ -19,36 +19,16 @@
 
 package de.greluc.trådfri.core
 
-import javax.json.Json
-
 /**
- * This file is used to test some functionalities of the library.
+ * This file is used to test some parts of the library.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-
 fun main(args: Array<String>) {
     println("Test started")
 
-    val factory = Json.createBuilderFactory(null)
-    val value = factory.createObjectBuilder()
-            .add("firstName", "John")
-            .add("lastName", "Smith")
-            .add("age", 25)
-            .add("address", factory.createObjectBuilder()
-                    .add("streetAddress", "21 2nd Street")
-                    .add("city", "New York")
-                    .add("state", "NY")
-                    .add("postalCode", "10021"))
-            .add("phoneNumber", factory.createArrayBuilder()
-                    .add(factory.createObjectBuilder()
-                            .add("type", "home")
-                            .add("number", "212 555-1234"))
-                    .add(factory.createObjectBuilder()
-                            .add("type", "fax")
-                            .add("number", "646 555-4567")))
-            .build()
+    val gateway = Gateway("1", "vs0.inf.ethz.ch")
 
-    println(value.toString())
+    val client = CoAPClient(gateway, "sesame")
 }

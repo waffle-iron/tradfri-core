@@ -19,7 +19,9 @@
 
 package de.greluc.trådfri.core
 
+import de.greluc.trådfri.core.Constants.ATTR_ID
 import de.greluc.trådfri.core.Constants.ATTR_LIGHT_STATE
+import de.greluc.trådfri.core.Constants.ATTR_NAME
 import javax.json.Json
 
 open class Light(id: String) : Device(id) {
@@ -28,6 +30,8 @@ open class Light(id: String) : Device(id) {
     override fun generatePayload(): String {
         val factory = Json.createBuilderFactory(null)
         val value = factory.createObjectBuilder()
+                .add(ATTR_NAME, name)
+                .add(ATTR_ID, id)
                 .add(ATTR_LIGHT_STATE, state)
                 .add("lastName", "Smith")
                 .add("age", 25)

@@ -31,14 +31,10 @@ import org.eclipse.californium.scandium.config.DtlsConnectorConfig;
 import org.eclipse.californium.scandium.dtls.cipher.CipherSuite;
 import org.eclipse.californium.scandium.dtls.pskstore.InMemoryPskStore;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.security.cert.Certificate;
 import java.util.LinkedList;
 
 import static de.greluc.trådfri.core.Constants.*;
@@ -50,45 +46,24 @@ import static de.greluc.trådfri.core.Constants.*;
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-public class SecureClient
+public class CoAPClient
 {
-
     // for coaps
     private static Endpoint dtlsEndpoint;
 
-    // the trust store file used for DTLS server authentication
-    private final String TRUST_STORE_LOCATION = "certs/trustStore.jks";
-    private final String TRUST_STORE_PASSWORD = "rootPass";
-    private final String KEY_STORE_LOCATION = "certs/keyStore.jks";
-    private final String KEY_STORE_PASSWORD = "endPass";
     // exit codes for runtime errors
-    private final int ERR_MISSING_METHOD = 1;
     private final int ERR_UNKNOWN_METHOD = 2;
-    private final int ERR_MISSING_URI = 3;
     private final int ERR_BAD_URI = 4;
-    private final int ERR_REQUEST_FAILED = 5;
     private final int ERR_RESPONSE_FAILED = 6;
-    // Succes exit code
-    private final int SUCCESS = 0;
     // initialize parameters
     private URI uri;
     private Gateway gateway;
 
-    public SecureClient(Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
+    public CoAPClient(Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
     {
         this.gateway = gateway;
 
-        // load trust store
-        KeyStore trustStore = KeyStore.getInstance("JKS");
-        InputStream inTrust = new FileInputStream(TRUST_STORE_LOCATION);
-        trustStore.load(inTrust, TRUST_STORE_PASSWORD.toCharArray());
-        // load multiple certificates if needed
-        Certificate[] trustedCertificates = new Certificate[1];
-        trustedCertificates[0] = trustStore.getCertificate("root");
-
         DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
-
-        builder.setTrustStore(trustedCertificates);
 
         InMemoryPskStore pskStore = new InMemoryPskStore();
         pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, psk.getBytes()); //TODO get secure input of psk over the api from outside

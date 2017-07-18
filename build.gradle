@@ -46,8 +46,6 @@ dependencies {
     compile "javax.json:javax.json-api:$json_version"
     compile "org.glassfish:javax.json:$json_version"
 
-    compile "com.google.guava:guava:$guava_version"
-
     compile "org.eclipse.californium:californium-core:$californium_version"
     compile "org.eclipse.californium:scandium:$californium_version"
 }

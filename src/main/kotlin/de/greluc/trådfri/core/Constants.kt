@@ -25,7 +25,7 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal object Constants { //TODO comments for every entry and every group and add missing attr
+object Constants { //TODO comments for every entry and every group and add missing attr
     const val OOT_DEVICES: String = "15001"
     const val ROOT_GROUPS: String = "15004"
     const val ROOT_MOODS: String = "15005"
@@ -88,6 +88,7 @@ internal object Constants { //TODO comments for every entry and every group and 
     const val METHOD_OBSERVE: String = "OBSERVE"
 
     const val PRESET_CLIENT_IDENTITY: String = "Client_identity"
+    const val PRESET_TEST_PSK: String = "sesame"
     const val PRESET_GATEWAY_PORT: String = "5864"
 
     const val PRESET_COLOR_COLD: String = "f5faf6"
