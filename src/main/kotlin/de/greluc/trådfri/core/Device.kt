@@ -26,13 +26,11 @@ package de.greluc.trådfri.core
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
 open class Device(val id: String) {
-    var name: String = ""
-    var firmware: String = ""
-    var type: DeviceType = DeviceType.DEV_TYPE_UNKNOWN
-    var manufacturer: String = ""
-    var model: String = ""
+    var name = ""
+    var firmware = ""
+    var manufacturer = ""
+    var model = ""
+    var type = DeviceType.DEV_TYPE_UNKNOWN
 
-    open fun generatePayload(): String {
-        return ""
-    }
+    open fun generatePayload() = ""
 }

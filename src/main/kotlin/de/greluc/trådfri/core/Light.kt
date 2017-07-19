@@ -31,7 +31,7 @@ import javax.json.Json
  * @version 1.0.0-SNAPSHOT 19.07.2017
  */
 open class Light(id: String) : Device(id) {
-    var state: String = ""
+    var state = ""
 
     override fun generatePayload(): String {
         val factory = Json.createBuilderFactory(null)

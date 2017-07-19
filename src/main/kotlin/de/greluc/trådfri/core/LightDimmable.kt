@@ -28,7 +28,7 @@ import javax.json.Json
  * @version 1.0.0-SNAPSHOT 19.07.2017
  */
 class LightDimmable(id: String) : Light(id) {
-    var dimm: String = ""
+    var dimmState = ""
 
     override fun generatePayload(): String {
         val factory = Json.createBuilderFactory(null)
