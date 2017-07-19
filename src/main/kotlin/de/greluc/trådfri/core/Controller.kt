@@ -23,7 +23,7 @@ package de.greluc.trådfri.core
  * This class handles the CoAP commands.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 13.07.2017
+ * @version 1.0.0-SNAPSHOT 19.07.2017
  */
 class Controller(gateway: Gateway, psk: String) {
     lateinit var client: Client

@@ -23,7 +23,7 @@ import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT
 import java.net.InetSocketAddress
 
 /**
- * This data class stores the information about the Trådfri gateway.
+ * This data class stores the information about the Trådfri gateway. It extends the generic Device class.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017

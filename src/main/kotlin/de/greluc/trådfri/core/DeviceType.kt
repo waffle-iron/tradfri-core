@@ -19,6 +19,12 @@
 
 package de.greluc.trådfri.core
 
+/**
+ * This enum class represents the types of possible devices.
+ *
+ * @author Lucas Greuloch (greluc)
+ * @version 1.0.0-SNAPSHOT 19.07.2017
+ */
 enum class DeviceType {
     DEV_TYPE_GATEWAY,
     DEV_TYPE_LIGHT,

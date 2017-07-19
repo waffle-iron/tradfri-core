@@ -47,7 +47,7 @@ import static de.greluc.trådfri.core.Constants.*;
  * Console-Client fom Californium-Tools was used as a blueprint.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 13.07.2017
+ * @version 1.0.0-SNAPSHOT 19.07.2017
  */
 public class Client
 {
@@ -64,7 +64,6 @@ public class Client
     // for coaps
     private static Endpoint dtlsEndpoint;
 
-    // exit codes for runtime errors
     // initialize parameters
     private URI uri;
     private Gateway gateway;

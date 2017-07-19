@@ -21,6 +21,12 @@ package de.greluc.trådfri.core
 
 import javax.json.Json
 
+/**
+ * This class represents a dimmable light. It extends the Light class.
+ *
+ * @author Lucas Greuloch (greluc)
+ * @version 1.0.0-SNAPSHOT 19.07.2017
+ */
 class LightDimmable(id: String) : Light(id) {
     var dimm: String = ""
 

@@ -21,6 +21,12 @@ package de.greluc.trådfri.core
 
 import javax.json.Json
 
+/**
+ * This class represents a dimmable light that can change its color. It extends the LightColor class.
+ *
+ * @author Lucas Greuloch (greluc)
+ * @version 1.0.0-SNAPSHOT 19.07.2017
+ */
 class LightColorDimmable(id: String) : LightColor(id) {
 
     override fun generatePayload(): String {

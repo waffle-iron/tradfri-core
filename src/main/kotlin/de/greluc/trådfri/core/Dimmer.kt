@@ -19,4 +19,10 @@
 
 package de.greluc.trådfri.core
 
+/**
+ * This class represents a dimmer button. It extends the generic Device class.
+ *
+ * @author Lucas Greuloch (greluc)
+ * @version 1.0.0-SNAPSHOT 19.07.2017
+ */
 class Dimmer(id: String) : Device(id)

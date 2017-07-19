@@ -24,6 +24,12 @@ import de.greluc.trådfri.core.Constants.ATTR_LIGHT_STATE
 import de.greluc.trådfri.core.Constants.ATTR_NAME
 import javax.json.Json
 
+/**
+ * This class represents a light. It extends the generic Device class.
+ *
+ * @author Lucas Greuloch (greluc)
+ * @version 1.0.0-SNAPSHOT 19.07.2017
+ */
 open class Light(id: String) : Device(id) {
     var state: String = ""
 
