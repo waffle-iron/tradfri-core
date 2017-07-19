@@ -13,7 +13,7 @@
 
 ### Why Should This Be In Core?
 
-<!-- Explain why this functionality should be in atom/atom as opposed to a package -->
+<!-- Explain why this functionality should be in tradfri-central/tradfri-core as opposed to a package -->
 
 ### Benefits
 
