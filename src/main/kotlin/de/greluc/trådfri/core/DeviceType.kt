@@ -13,27 +13,23 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
 
 /**
- * This class stores the message as an JSON object.
+ * This enum class represents the types of possible devices.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 13.07.2017
+ * @version 1.0.0-SNAPSHOT 19.07.2017
  */
-internal class CoAPMessage { //TODO implement JSON format of Trådfri
-    private val payload: String = ""
-    private val method: String = ""
-
-    fun getPayload() = payload
-
-    fun getMethod() = method
+enum class DeviceType {
+    DEV_TYPE_GATEWAY,
+    DEV_TYPE_LIGHT,
+    DEV_TYPE_LIGHT_COLOR,
+    DEV_TYPE_LIGHT_DIMM,
+    DEV_TYPE_LIGHT_COLOR_DIMM,
+    DEV_TYPE_UNKNOWN
 }
-
-/*
-echo '{ "3311" : [{ "5851" : 255 }] }' | ./coap-client -u "Client_identity" -k "YOUR_KEY" -v 10 -m put "coaps://192.169..0.3:5684/15001/65538" -f -
- */

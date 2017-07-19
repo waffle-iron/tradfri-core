@@ -13,7 +13,7 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
@@ -25,7 +25,7 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal object Constants { //TODO comments for every entry and every group and add missing attr
+object Constants { //TODO comments for every entry and every group and add missing attr
     const val OOT_DEVICES: String = "15001"
     const val ROOT_GROUPS: String = "15004"
     const val ROOT_MOODS: String = "15005"
@@ -78,10 +78,19 @@ internal object Constants { //TODO comments for every entry and every group and 
     const val ATTR_TRANSITION_TIME: String = "5712"
     const val ATTR_REPEAT_DAYS: String = "9041"
 
-    const val ATTR_DISCOVER_ALL: String = ".well-known/core"
+    const val ATTR_DISCOVER_ALL: String = "/.well-known/core"
 
-    const val PRESET_CLIENT_IDENTITY: String = "Client_identity"
-    const val PRESET_GATEWAY_PORT: String = "5864"
+    const val METHOD_GET: String = "GET"
+    const val METHOD_POST: String = "POST"
+    const val METHOD_PUT: String = "PUT"
+    const val METHOD_DELETE: String = "DELETE"
+    const val METHOD_DISCOVER: String = "DISCOVER"
+    const val METHOD_OBSERVE: String = "OBSERVE"
+
+    const val PRESET_CLIENT_IDENTITY: String = "password"
+    const val PRESET_TEST_PSK: String = "sesame"
+    const val PRESET_GATEWAY_PORT_UNSECURE: String = "5683"
+    const val PRESET_GATEWAY_PORT_SECURE: String = "5684"
 
     const val PRESET_COLOR_COLD: String = "f5faf6"
     const val PRESET_COLOR_COLD_X: String = "24930"
@@ -125,9 +134,9 @@ a PUT on /15011/15012 can be used to perform many different operations (check OT
 |    Power Measurement 			| 3305|
 |    Actuation 					| 3306|
 |    Set Point 					| 3308|
-|    Load Control 				| 3310|
-|    Light Control 				| 3311|
-|    Power Control 				| 3312|
+|    Load Controller 				| 3310|
+|    Light Controller 				| 3311|
+|    Power Controller 				| 3312|
 |    Accelerometer 				| 3313|
 |    Magnetometer 				| 3314|
 |    Barometer  	   		 	| 3315|
@@ -159,7 +168,7 @@ a PUT on /15011/15012 can be used to perform many different operations (check OT
 |    Addressable Text Display	| 3341|
 |    On/Off Switch				| 3342|
 |    Level Controllers			| 3343|
-|    Up/Down Control			| 3344|
+|    Up/Down Controller			| 3344|
 |    Multiple Axis Joystick		| 3345|
 |    Rate						| 3346|
 |    Push Button				| 3347|

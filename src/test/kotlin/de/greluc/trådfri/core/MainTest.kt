@@ -13,19 +13,35 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
 
+import org.eclipse.californium.core.Utils
+
 /**
- * This file is used to test some functionalities of the library.
+ * This file is used to test some parts of the library.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-
 fun main(args: Array<String>) {
     println("Test started")
+
+    testCoAP()
+}
+
+fun testCoAP() {
+    val gateway = Gateway("1", "localhost")
+
+    val client = Client(gateway, "sesame".toCharArray())
+
+    val listResponses = client.sendMessage("/secure", "GET", "", false)
+
+    if (listResponses.size > 0) {
+        println("PAYLOAD:")
+        println(Utils.prettyPrint(listResponses.get(0)))
+    }
 }

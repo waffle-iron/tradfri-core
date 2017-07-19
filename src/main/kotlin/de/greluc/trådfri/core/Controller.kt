@@ -13,20 +13,28 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
 
 /**
- * Created by Lucas on 14.07.2017.
+ * This class handles the CoAP commands.
+ *
+ * @author Lucas Greuloch (greluc)
+ * @version 1.0.0-SNAPSHOT 19.07.2017
  */
-internal class GatewayDataTest {
-    @org.junit.jupiter.api.Test fun getInetAddress() {
-        assert(GatewayData("192.168.1.1", "5864").getInetAddress().address.hostAddress.equals("192.168.1.1"))
-        assert(GatewayData("192.168.1.1", "5864").getInetAddress().port == 5864)
-        //assert(GatewayData("controller.trådfri.greluc.de").getInetAddress().equals("X.X.X.X:5864")) TODO add when static ip is available
+class Controller(gateway: Gateway, psk: CharArray) {
+    lateinit var client: Client
+
+    init {
+        Client(gateway, psk)
     }
 
+    fun sendMessage(observe: Boolean) {
+        if (observe) {
+        } else {
+        }
+    }
 }

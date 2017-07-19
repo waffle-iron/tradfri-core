@@ -13,28 +13,16 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
 
 /**
- * This class handles the CoAP commands.
+ * This class represents a dimmer button. It extends the generic Device class.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 13.07.2017
+ * @version 1.0.0-SNAPSHOT 19.07.2017
  */
-internal class CoAPCommand(var gatewayData: GatewayData) {
-    fun setMessage(message: CoAPMessage) {
-
-    }
-
-    fun sendMessage(single: Boolean, id: Int, message: CoAPMessage) {
-        if (single) {
-            SecureClient(false, true, true, gatewayData)
-        } else {
-            SecureClient(false, true, true, gatewayData)
-        }
-    }
-}
+class Dimmer(id: String) : Device(id)

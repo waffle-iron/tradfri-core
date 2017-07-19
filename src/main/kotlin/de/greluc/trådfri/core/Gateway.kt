@@ -13,22 +13,22 @@
  * that accompanied this code).
  *
  * Please contact lucas.greuloch@gmail.com
- * or visit trådfri.greluc.de if you need additional information or have any
+ * or visit www.trådfri-central.de if you need additional information or have any
  * questions.
  */
 
 package de.greluc.trådfri.core
 
-import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT
+import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT_SECURE
 import java.net.InetSocketAddress
 
 /**
- * This data class stores the information about the Trådfri gateway.
+ * This data class stores the information about the Trådfri gateway. It extends the generic Device class.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class GatewayData(host: String, port: String = PRESET_GATEWAY_PORT) {
+class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT_SECURE) : Device(id) {
     private val address: InetSocketAddress
 
     init {
