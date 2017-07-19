@@ -19,6 +19,8 @@
 
 package de.greluc.trådfri.core
 
+import org.eclipse.californium.core.Utils
+
 /**
  * This file is used to test some parts of the library.
  *
@@ -27,19 +29,19 @@ package de.greluc.trådfri.core
  */
 fun main(args: Array<String>) {
     println("Test started")
+
+    testCoAP()
 }
 
 fun testCoAP() {
-    val gateway = Gateway("1", "vs0.inf.ethz.ch")
+    val gateway = Gateway("1", "localhost")
 
-    val client = CoAPClient(gateway, "sesame")
+    val client = Client(gateway, "sesame")
 
+    val listResponses = client.sendMessage("/secure", "GET", "", false)
 
-    println("Client started")
-
-    val listResponses = client.sendMessage("/test", "GET", "", false)
-
-    println("Message send and Response arrived")
-
-    listResponses.get(0).payload
+    if (listResponses.size > 0) {
+        println("PAYLOAD:")
+        println(Utils.prettyPrint(listResponses.get(0)))
+    }
 }

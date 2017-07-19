@@ -19,6 +19,7 @@
 
 package de.greluc.trådfri.core;
 
+import org.eclipse.californium.core.CaliforniumLogger;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.coap.Response;
@@ -27,6 +28,7 @@ import org.eclipse.californium.core.network.Endpoint;
 import org.eclipse.californium.core.network.EndpointManager;
 import org.eclipse.californium.core.network.config.NetworkConfig;
 import org.eclipse.californium.scandium.DTLSConnector;
+import org.eclipse.californium.scandium.ScandiumLogger;
 import org.eclipse.californium.scandium.config.DtlsConnectorConfig;
 import org.eclipse.californium.scandium.dtls.cipher.CipherSuite;
 import org.eclipse.californium.scandium.dtls.pskstore.InMemoryPskStore;
@@ -36,6 +38,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import static de.greluc.trådfri.core.Constants.*;
 
@@ -46,27 +49,34 @@ import static de.greluc.trådfri.core.Constants.*;
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-public class CoAPClient
+public class Client
 {
+
+    static
+    {
+        CaliforniumLogger.initialize();
+        CaliforniumLogger.setLevel(Level.WARNING);
+
+        ScandiumLogger.initialize();
+        ScandiumLogger.setLevel(Level.ALL);
+    }
+
     // for coaps
     private static Endpoint dtlsEndpoint;
 
     // exit codes for runtime errors
-    private final int ERR_UNKNOWN_METHOD = 2;
-    private final int ERR_BAD_URI = 4;
-    private final int ERR_RESPONSE_FAILED = 6;
     // initialize parameters
     private URI uri;
     private Gateway gateway;
 
-    public CoAPClient(Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
+    public Client(Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
     {
         this.gateway = gateway;
 
         DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
 
         InMemoryPskStore pskStore = new InMemoryPskStore();
-        pskStore.addKnownPeer(gateway.getInetAddress(), "password", psk.getBytes()); //TODO get secure input of psk over the api from outside
+        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, psk.getBytes()); //TODO get secure input of psk over the api from outside
         builder.setPskStore(pskStore);
         builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
 
@@ -86,7 +96,6 @@ public class CoAPClient
         catch(URISyntaxException e)
         {
             System.err.println("Failed to parse URI: " + e.getMessage());
-            System.exit(ERR_BAD_URI);
         }
 
         // create request according to specified method
@@ -100,7 +109,7 @@ public class CoAPClient
         LinkedList<Response> listResponse = new LinkedList<>();
         try
         {
-            request.send();
+            request.send(dtlsEndpoint);
 
             // loop for receiving multiple responses
             do
@@ -114,7 +123,6 @@ public class CoAPClient
                 catch(InterruptedException e)
                 {
                     System.err.println("Failed to receive response: " + e.getMessage());
-                    System.exit(ERR_RESPONSE_FAILED);
                 }
 
                 // output response
@@ -174,9 +182,7 @@ public class CoAPClient
         else
         {
             System.err.println("Unknown method: " + method);
-            System.exit(ERR_UNKNOWN_METHOD);
             return null;
         }
     }
-
 }

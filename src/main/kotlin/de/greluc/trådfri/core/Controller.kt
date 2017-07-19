@@ -19,23 +19,21 @@
 
 package de.greluc.trådfri.core
 
-import de.greluc.trådfri.core.Constants.PRESET_TEST_PSK
-
 /**
  * This class handles the CoAP commands.
  *
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-internal class Control(gateway: Gateway, psk: String) {
-    lateinit var client: CoAPClient
+class Controller(gateway: Gateway, psk: String) {
+    lateinit var client: Client
 
     init {
-        CoAPClient(gateway, PRESET_TEST_PSK)
+        Client(gateway, "PSK")
     }
 
-    fun sendMessage(single: Boolean) {
-        if (single) {
+    fun sendMessage(observe: Boolean) {
+        if (observe) {
         } else {
         }
     }

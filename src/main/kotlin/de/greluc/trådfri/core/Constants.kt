@@ -87,9 +87,9 @@ object Constants { //TODO comments for every entry and every group and add missi
     const val METHOD_DISCOVER: String = "DISCOVER"
     const val METHOD_OBSERVE: String = "OBSERVE"
 
-    const val PRESET_CLIENT_IDENTITY: String = "Client_identity"
+    const val PRESET_CLIENT_IDENTITY: String = "password"
     const val PRESET_TEST_PSK: String = "sesame"
-    const val PRESET_GATEWAY_PORT: String = "5864"
+    const val PRESET_GATEWAY_PORT: String = "5684"
 
     const val PRESET_COLOR_COLD: String = "f5faf6"
     const val PRESET_COLOR_COLD_X: String = "24930"
@@ -133,9 +133,9 @@ a PUT on /15011/15012 can be used to perform many different operations (check OT
 |    Power Measurement 			| 3305|
 |    Actuation 					| 3306|
 |    Set Point 					| 3308|
-|    Load Control 				| 3310|
-|    Light Control 				| 3311|
-|    Power Control 				| 3312|
+|    Load Controller 				| 3310|
+|    Light Controller 				| 3311|
+|    Power Controller 				| 3312|
 |    Accelerometer 				| 3313|
 |    Magnetometer 				| 3314|
 |    Barometer  	   		 	| 3315|
@@ -167,7 +167,7 @@ a PUT on /15011/15012 can be used to perform many different operations (check OT
 |    Addressable Text Display	| 3341|
 |    On/Off Switch				| 3342|
 |    Level Controllers			| 3343|
-|    Up/Down Control			| 3344|
+|    Up/Down Controller			| 3344|
 |    Multiple Axis Joystick		| 3345|
 |    Rate						| 3346|
 |    Push Button				| 3347|
