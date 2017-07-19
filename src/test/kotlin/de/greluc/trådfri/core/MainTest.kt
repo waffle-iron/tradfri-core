@@ -36,7 +36,7 @@ fun main(args: Array<String>) {
 fun testCoAP() {
     val gateway = Gateway("1", "localhost")
 
-    val client = Client(gateway, "sesame")
+    val client = Client(gateway, "sesame".toCharArray())
 
     val listResponses = client.sendMessage("/secure", "GET", "", false)
 

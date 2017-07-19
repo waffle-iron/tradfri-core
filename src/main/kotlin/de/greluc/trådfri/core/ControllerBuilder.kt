@@ -33,6 +33,15 @@ class ControllerBuilder {
     private var address = InetAddress.getLocalHost()
     private var port = PRESET_GATEWAY_PORT_SECURE
     private var psk: CharArray = "".toCharArray()
+    private var id = "0"
+
+    fun setGatewayID(id: String) {
+        if (Integer.parseInt(id) > 0) {
+            this.id = id
+        } else {
+            error("ID is invalid!")
+        }
+    }
 
     fun setPSK(psk: CharArray) {
         this.psk = psk
@@ -67,10 +76,6 @@ class ControllerBuilder {
     }
 
     fun build(): Controller {
-        if (psk != null) {
-            return Controller(Gateway("0", address.hostAddress, port), psk)
-        } else {
-            error("No PSK set!")
-        }
+        return Controller(Gateway("0", address.hostAddress, port), psk)
     }
 }
