@@ -75,7 +75,7 @@ public class Client
         DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
 
         InMemoryPskStore pskStore = new InMemoryPskStore();
-        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, psk.toString().getBytes()); //TODO get secure input of psk over the api from outside
+        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, new String(psk).getBytes()); //TODO get secure input of psk over the api from outside
         builder.setPskStore(pskStore);
         builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
 
