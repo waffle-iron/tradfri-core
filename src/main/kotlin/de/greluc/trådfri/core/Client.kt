@@ -49,9 +49,8 @@ import java.util.logging.Level
 /**
  * This class implements a secure CoAP client.
  * Console-Client fom Californium-Tools was used as a blueprint.
-
+ *
  * @author Lucas Greuloch (greluc)
- * *
  * @version 1.0.0-SNAPSHOT 19.07.2017
  */
 class Client @Throws(IOException::class, GeneralSecurityException::class) //TODO get secure input of psk over the api from outside
