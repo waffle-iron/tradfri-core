@@ -53,17 +53,18 @@ import java.util.logging.Level
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 19.07.2017
  */
-class Client @Throws(IOException::class, GeneralSecurityException::class) //TODO get secure input of psk over the api from outside
+class Client @Throws(IOException::class, GeneralSecurityException::class)
 constructor(private val gateway: Gateway, psk: CharArray) {
 
     // initialize parameters
     private var uri: URI? = null
+    private var loop = false
 
     init {
         val builder = DtlsConnectorConfig.Builder()
 
         val pskStore = InMemoryPskStore()
-        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, String(psk).toByteArray()) //TODO get secure input of psk over the api from outside
+        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, String(psk).toByteArray())
         builder.setPskStore(pskStore)
         builder.setSupportedCipherSuites(arrayOf(CipherSuite.TLS_PSK_WITH_AES_128_CCM_8))
 
@@ -80,6 +81,8 @@ constructor(private val gateway: Gateway, psk: CharArray) {
         } catch (e: URISyntaxException) {
             System.err.println("Failed to parse URI: " + e.message)
         }
+
+        this.loop = loop
 
         // create request according to specified method
         val request = newRequest(method)
@@ -111,7 +114,7 @@ constructor(private val gateway: Gateway, psk: CharArray) {
                     System.err.println("Request timed out")
                     break
                 }
-            } while (loop)
+            } while (this.loop)
         } catch (e: Exception) {
             System.err.println("Failed to execute request: " + e.message)
         }
@@ -119,7 +122,7 @@ constructor(private val gateway: Gateway, psk: CharArray) {
         return listResponse
     }
 
-    /*
+    /**
      * Instantiates a new request based on a string describing a method.
      *
      * @return A new request object, or null if method not recognized
@@ -138,6 +141,7 @@ constructor(private val gateway: Gateway, psk: CharArray) {
         } else if (method == METHOD_OBSERVE) {
             val request = Request.newGet()
             request.setObserve()
+            this.loop = true
             return request
         } else {
             System.err.println("Unknown method: " + method)
