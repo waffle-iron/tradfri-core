@@ -8,7 +8,7 @@
 
 ### Website
 
-You can finde more information about Trådfri-Core at the [Trådfri-Central](https://www.tradfri-central.de) Website (when it is launched).
+You can finde more information about Trådfri-Core at the [Trådfri-Central](https://www.tradfri-central.de) Website (when it is launched). The website is at the moment under construction and is expected to be launched around christmas.
 
 ### Chatroom
 
