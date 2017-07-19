@@ -64,7 +64,7 @@ constructor(private val gateway: Gateway, psk: CharArray) {
         val builder = DtlsConnectorConfig.Builder()
 
         val pskStore = InMemoryPskStore()
-        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, psk.toString().toByteArray()) //TODO get secure input of psk over the api from outside
+        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, String(psk).toByteArray()) //TODO get secure input of psk over the api from outside
         builder.setPskStore(pskStore)
         builder.setSupportedCipherSuites(arrayOf(CipherSuite.TLS_PSK_WITH_AES_128_CCM_8))
 
