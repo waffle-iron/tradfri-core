@@ -68,14 +68,14 @@ public class Client
     private URI uri;
     private Gateway gateway;
 
-    public Client(Gateway gateway, String psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
+    public Client(Gateway gateway, char[] psk) throws IOException, GeneralSecurityException //TODO get secure input of psk over the api from outside
     {
         this.gateway = gateway;
 
         DtlsConnectorConfig.Builder builder = new DtlsConnectorConfig.Builder();
 
         InMemoryPskStore pskStore = new InMemoryPskStore();
-        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, psk.getBytes()); //TODO get secure input of psk over the api from outside
+        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, psk.toString().getBytes()); //TODO get secure input of psk over the api from outside
         builder.setPskStore(pskStore);
         builder.setSupportedCipherSuites(new CipherSuite[]{CipherSuite.TLS_PSK_WITH_AES_128_CCM_8});
 

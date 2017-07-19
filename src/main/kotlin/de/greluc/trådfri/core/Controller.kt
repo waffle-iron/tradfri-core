@@ -25,11 +25,11 @@ package de.greluc.trådfri.core
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 19.07.2017
  */
-class Controller(gateway: Gateway, psk: String) {
+class Controller(gateway: Gateway, psk: CharArray) {
     lateinit var client: Client
 
     init {
-        Client(gateway, "PSK")
+        Client(gateway, psk)
     }
 
     fun sendMessage(observe: Boolean) {

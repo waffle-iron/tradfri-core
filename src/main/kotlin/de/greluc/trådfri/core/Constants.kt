@@ -89,7 +89,8 @@ object Constants { //TODO comments for every entry and every group and add missi
 
     const val PRESET_CLIENT_IDENTITY: String = "password"
     const val PRESET_TEST_PSK: String = "sesame"
-    const val PRESET_GATEWAY_PORT: String = "5684"
+    const val PRESET_GATEWAY_PORT_UNSECURE: String = "5683"
+    const val PRESET_GATEWAY_PORT_SECURE: String = "5684"
 
     const val PRESET_COLOR_COLD: String = "f5faf6"
     const val PRESET_COLOR_COLD_X: String = "24930"

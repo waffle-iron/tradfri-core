@@ -19,7 +19,7 @@
 
 package de.greluc.trådfri.core
 
-import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT
+import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT_SECURE
 import java.net.InetSocketAddress
 
 /**
@@ -28,7 +28,7 @@ import java.net.InetSocketAddress
  * @author Lucas Greuloch (greluc)
  * @version 1.0.0-SNAPSHOT 13.07.2017
  */
-class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT) : Device(id) {
+class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT_SECURE) : Device(id) {
     private val address: InetSocketAddress
 
     init {

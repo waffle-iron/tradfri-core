@@ -19,7 +19,7 @@
 
 package de.greluc.trådfri.core
 
-import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT
+import de.greluc.trådfri.core.Constants.PRESET_GATEWAY_PORT_SECURE
 import java.net.InetAddress
 import java.net.UnknownHostException
 
@@ -30,8 +30,13 @@ import java.net.UnknownHostException
  * @version 1.0.0-SNAPSHOT 19.07.2017
  */
 class ControllerBuilder {
-    var address: InetAddress = InetAddress.getLocalHost()
-    var port: String = PRESET_GATEWAY_PORT
+    private var address = InetAddress.getLocalHost()
+    private var port = PRESET_GATEWAY_PORT_SECURE
+    private var psk: CharArray = "".toCharArray()
+
+    fun setPSK(psk: CharArray) {
+        this.psk = psk
+    }
 
     fun setServerAddress(address: String) {
         try {
@@ -58,6 +63,14 @@ class ControllerBuilder {
             this.port = port.toString()
         } else {
             error("Port is invalid!")
+        }
+    }
+
+    fun build(): Controller {
+        if (psk != null) {
+            return Controller(Gateway("0", address.hostAddress, port), psk)
+        } else {
+            error("No PSK set!")
         }
     }
 }
