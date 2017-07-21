@@ -25,11 +25,12 @@ import javax.json.Json
  * This class represents a dimmable light that can change its color. It extends the LightColor class.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 19.07.2017
+ * @version 1.0.0-SNAPSHOT 21.07.2017
  */
 class LightColorDimmable(id: String) : LightColor(id) {
     var dimmState = ""
 
+    //TODO implement JSON format
     override fun generatePayload(): String {
         val factory = Json.createBuilderFactory(null)
         val value = factory.createObjectBuilder()

@@ -25,7 +25,7 @@ import javax.json.Json
  * This class represents a light that can change its color. It extends the Light class.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 19.07.2017
+ * @version 1.0.0-SNAPSHOT 21.07.2017
  */
 open class LightColor(id: String) : Light(id) {
     var color = ""
@@ -33,6 +33,7 @@ open class LightColor(id: String) : Light(id) {
     var colorY = ""
     var colorZ = ""
 
+    //TODO implement JSON format
     override fun generatePayload(): String {
         val factory = Json.createBuilderFactory(null)
         val value = factory.createObjectBuilder()

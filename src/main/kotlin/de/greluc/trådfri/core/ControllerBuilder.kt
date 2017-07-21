@@ -27,7 +27,7 @@ import java.net.UnknownHostException
  * This class builds a new Controller and is the entry point for Trådfri-Core.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 19.07.2017
+ * @version 1.0.0-SNAPSHOT 21.07.2017
  */
 class ControllerBuilder {
     private var address = InetAddress.getLocalHost()
@@ -76,6 +76,6 @@ class ControllerBuilder {
     }
 
     fun build(): Controller {
-        return Controller(Gateway("0", address.hostAddress, port), psk)
+        return Controller(Gateway(id, address.hostAddress, port), psk)
     }
 }

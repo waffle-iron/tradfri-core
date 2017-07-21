@@ -26,7 +26,6 @@ import de.greluc.trådfri.core.Constants.METHOD_OBSERVE
 import de.greluc.trådfri.core.Constants.METHOD_POST
 import de.greluc.trådfri.core.Constants.METHOD_PUT
 import de.greluc.trådfri.core.Constants.PRESET_CLIENT_IDENTITY
-import org.eclipse.californium.core.CaliforniumLogger
 import org.eclipse.californium.core.coap.MediaTypeRegistry
 import org.eclipse.californium.core.coap.Request
 import org.eclipse.californium.core.coap.Response
@@ -35,7 +34,6 @@ import org.eclipse.californium.core.network.Endpoint
 import org.eclipse.californium.core.network.EndpointManager
 import org.eclipse.californium.core.network.config.NetworkConfig
 import org.eclipse.californium.scandium.DTLSConnector
-import org.eclipse.californium.scandium.ScandiumLogger
 import org.eclipse.californium.scandium.config.DtlsConnectorConfig
 import org.eclipse.californium.scandium.dtls.cipher.CipherSuite
 import org.eclipse.californium.scandium.dtls.pskstore.InMemoryPskStore
@@ -44,21 +42,19 @@ import java.net.URI
 import java.net.URISyntaxException
 import java.security.GeneralSecurityException
 import java.util.*
-import java.util.logging.Level
 
 /**
  * This class implements a secure CoAP client.
  * Console-Client fom Californium-Tools was used as a blueprint.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 19.07.2017
+ * @version 1.0.0-SNAPSHOT 21.07.2017
  */
 class Client @Throws(IOException::class, GeneralSecurityException::class)
 constructor(private val gateway: Gateway, psk: CharArray) {
 
-    // initialize parameters
-    private var uri: URI? = null
-    private var loop = false
+    // for coaps
+    private lateinit var dtlsEndpoint: Endpoint
 
     init {
         val builder = DtlsConnectorConfig.Builder()
@@ -68,24 +64,36 @@ constructor(private val gateway: Gateway, psk: CharArray) {
         builder.setPskStore(pskStore)
         builder.setSupportedCipherSuites(arrayOf(CipherSuite.TLS_PSK_WITH_AES_128_CCM_8))
 
-        val dtlsconnector = DTLSConnector(builder.build(), null)
+        val dtlsConnector = DTLSConnector(builder.build(), null)
 
-        dtlsEndpoint = CoapEndpoint(dtlsconnector, NetworkConfig.getStandard())
+        dtlsEndpoint = CoapEndpoint(dtlsConnector, NetworkConfig.getStandard())
         dtlsEndpoint.start()
         EndpointManager.getEndpointManager().defaultEndpoint = dtlsEndpoint
     }
 
-    internal fun sendMessage(path: String, method: String, payload: String, loop: Boolean): LinkedList<Response> {
+    /**
+     * Sends the chosen payload.
+     *
+     * @param path Path of the device
+     * @param method Chosen method
+     * @param payload Payload that will be transmitted
+     *
+     * @return LinkedList of the received responses
+     */
+    internal fun sendMessage(path: String, method: String, payload: String): LinkedList<Response> {
+        var uri: URI? = null
+        var loop = false
+
         try {
             uri = URI("coaps://" + gateway.getInetAddress().hostString + ":" + gateway.getInetAddress().port + path)
         } catch (e: URISyntaxException) {
             System.err.println("Failed to parse URI: " + e.message)
         }
 
-        this.loop = loop
-
         // create request according to specified method
         val request = newRequest(method)
+        if (method == METHOD_OBSERVE)
+            loop = true
 
         request!!.setURI(uri!!)
         request.setPayload(payload)
@@ -114,7 +122,7 @@ constructor(private val gateway: Gateway, psk: CharArray) {
                     System.err.println("Request timed out")
                     break
                 }
-            } while (this.loop)
+            } while (loop)
         } catch (e: Exception) {
             System.err.println("Failed to execute request: " + e.message)
         }
@@ -124,6 +132,8 @@ constructor(private val gateway: Gateway, psk: CharArray) {
 
     /**
      * Instantiates a new request based on a string describing a method.
+     *
+     * @param method String representation of chosen method
      *
      * @return A new request object, or null if method not recognized
      */
@@ -141,25 +151,10 @@ constructor(private val gateway: Gateway, psk: CharArray) {
         } else if (method == METHOD_OBSERVE) {
             val request = Request.newGet()
             request.setObserve()
-            this.loop = true
             return request
         } else {
             System.err.println("Unknown method: " + method)
             return null
         }
-    }
-
-    companion object {
-
-        init {
-            CaliforniumLogger.initialize()
-            CaliforniumLogger.setLevel(Level.WARNING)
-
-            ScandiumLogger.initialize()
-            ScandiumLogger.setLevel(Level.ALL)
-        }
-
-        // for coaps
-        private lateinit var dtlsEndpoint: Endpoint
     }
 }

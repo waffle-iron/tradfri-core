@@ -19,10 +19,37 @@
 
 package de.greluc.trådfri.core
 
+import javax.json.Json
+
 /**
  * This class represents a dimmer button. It extends the generic Device class.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 19.07.2017
+ * @version 1.0.0-SNAPSHOT 21.07.2017
  */
-class Dimmer(id: String) : Device(id)
+class Dimmer(id: String) : Device(id) {
+    //TODO implement JSON format
+    override fun generatePayload(): String {
+        val factory = Json.createBuilderFactory(null)
+        val value = factory.createObjectBuilder()
+                .add(Constants.ATTR_NAME, name)
+                .add(Constants.ATTR_ID, id)
+                .add("lastName", "Smith")
+                .add("age", 25)
+                .add("address", factory.createObjectBuilder()
+                        .add("streetAddress", "21 2nd Street")
+                        .add("city", "New York")
+                        .add("state", "NY")
+                        .add("postalCode", "10021"))
+                .add("phoneNumber", factory.createArrayBuilder()
+                        .add(factory.createObjectBuilder()
+                                .add("type", "home")
+                                .add("number", "212 555-1234"))
+                        .add(factory.createObjectBuilder()
+                                .add("type", "fax")
+                                .add("number", "646 555-4567")))
+                .build()
+
+        return value.toString()
+    }
+}
