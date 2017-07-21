@@ -69,4 +69,14 @@ class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT_SECUR
 
         return value.toString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Gateway) return false
+        if (!super.equals(other)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int = super.hashCode()
 }
