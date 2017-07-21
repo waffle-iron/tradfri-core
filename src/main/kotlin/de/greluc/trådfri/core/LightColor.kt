@@ -56,26 +56,4 @@ open class LightColor(id: String) : Light(id) {
 
         return value.toString()
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is LightColor) return false
-        if (!super.equals(other)) return false
-
-        if (color != other.color) return false
-        if (colorX != other.colorX) return false
-        if (colorY != other.colorY) return false
-        if (colorZ != other.colorZ) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + color.hashCode()
-        result = 31 * result + colorX.hashCode()
-        result = 31 * result + colorY.hashCode()
-        result = 31 * result + colorZ.hashCode()
-        return result
-    }
 }
