@@ -23,18 +23,18 @@ package de.greluc.trådfri.core
  * This class handles the CoAP commands.
  *
  * @author Lucas Greuloch (greluc)
- * @version 1.0.0-SNAPSHOT 19.07.2017
+ * @version 1.0.0-SNAPSHOT 21.07.2017
  */
 class Controller(gateway: Gateway, psk: CharArray) {
     lateinit var client: Client
+    val devices: HashMap<String, Device> = HashMap()
 
     init {
         Client(gateway, psk)
     }
 
-    fun sendMessage(observe: Boolean) {
-        if (observe) {
-        } else {
-        }
+    fun getAllDevices() {
+
     }
+
 }

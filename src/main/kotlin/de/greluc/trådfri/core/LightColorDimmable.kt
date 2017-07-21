@@ -53,4 +53,20 @@ class LightColorDimmable(id: String) : LightColor(id) {
 
         return value.toString()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is LightColorDimmable) return false
+        if (!super.equals(other)) return false
+
+        if (dimmState != other.dimmState) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + dimmState.hashCode()
+        return result
+    }
 }

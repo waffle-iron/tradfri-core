@@ -33,4 +33,28 @@ open class Device(val id: String) {
     var type = DeviceType.DEV_TYPE_UNKNOWN
 
     open fun generatePayload() = ""
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Device) return false
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (firmware != other.firmware) return false
+        if (manufacturer != other.manufacturer) return false
+        if (model != other.model) return false
+        if (type != other.type) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + firmware.hashCode()
+        result = 31 * result + manufacturer.hashCode()
+        result = 31 * result + model.hashCode()
+        result = 31 * result + type.hashCode()
+        return result
+    }
 }
