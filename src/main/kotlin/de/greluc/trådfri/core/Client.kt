@@ -60,7 +60,7 @@ constructor(private val gateway: Gateway, psk: CharArray) {
         val builder = DtlsConnectorConfig.Builder()
 
         val pskStore = InMemoryPskStore()
-        pskStore.addKnownPeer(gateway.getInetAddress(), PRESET_CLIENT_IDENTITY, String(psk).toByteArray())
+        pskStore.addKnownPeer(gateway.address, PRESET_CLIENT_IDENTITY, String(psk).toByteArray())
         builder.setPskStore(pskStore)
         builder.setSupportedCipherSuites(arrayOf(CipherSuite.TLS_PSK_WITH_AES_128_CCM_8))
 
@@ -85,7 +85,7 @@ constructor(private val gateway: Gateway, psk: CharArray) {
         var loop = false
 
         try {
-            uri = URI("coaps://" + gateway.getInetAddress().hostString + ":" + gateway.getInetAddress().port + path)
+            uri = URI("coaps://" + gateway.address.hostString + ":" + gateway.address.port + path)
         } catch (e: URISyntaxException) {
             System.err.println("Failed to parse URI: " + e.message)
         }

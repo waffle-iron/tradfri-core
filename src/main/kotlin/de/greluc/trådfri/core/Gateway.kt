@@ -30,7 +30,7 @@ import javax.json.Json
  * @version 1.0.0-SNAPSHOT 21.07.2017
  */
 class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT_SECURE) : Device(id) {
-    private val address: InetSocketAddress
+    val address: InetSocketAddress
 
     init {
         //TODO display error dialogue instead of error messages in console or throw it to gui and let it get new input
@@ -44,8 +44,6 @@ class Gateway(id: String, host: String, port: String = PRESET_GATEWAY_PORT_SECUR
             e.printStackTrace()
         }
     }
-
-    fun getInetAddress() = address
 
     //TODO implement JSON format
     override fun generatePayload(): String {
