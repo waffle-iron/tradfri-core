@@ -31,10 +31,13 @@ class Controller(gateway: Gateway, psk: CharArray) {
 
     init {
         Client(gateway, psk)
+        getAllDevices()
     }
 
-    fun getAllDevices() {
+    fun getAllDevices(): HashMap<String, Device> {
+        val devices: HashMap<String, Device> = HashMap()
 
+        return devices
     }
 
 }
