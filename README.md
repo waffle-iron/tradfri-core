@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/tradfri-central/tradfri-core.png?label=ready&title=Ready)](https://waffle.io/tradfri-central/tradfri-core?utm_source=badge)
 # Trådfri-Core
 
 **Trådfri-Core** is an in Kotlin written library to control your IKEA Trådfri devices from different platforms. It is part of the [Trådfri-Central](https://github.com/tradfri-central/tradfri-central) and the core logic behind it.
